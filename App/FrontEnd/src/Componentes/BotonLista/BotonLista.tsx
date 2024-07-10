@@ -1,7 +1,6 @@
 import { Button, Typography } from '@mui/material';
 
 import styles from './BotonJornada.module.css';
-import { indigo } from '@mui/material/colors';
 
 interface props {
 	titulo: string;
