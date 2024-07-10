@@ -80,7 +80,7 @@ const router = createBrowserRouter([
 		path: '/',
 		element: (
 			<BarandiTheme>
-				<InicioSesion />
+				<MenuInicio />
 			</BarandiTheme>
 		)
 	},
