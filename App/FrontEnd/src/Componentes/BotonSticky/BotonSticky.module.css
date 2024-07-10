@@ -1,0 +1,20 @@
+.botonSticky {
+	position: fixed;
+	z-index: 20;
+}
+
+.left {
+	left: 1rem;
+}
+
+.right {
+	right: 1rem;
+}
+
+.top {
+	top: 5.5rem;
+}
+
+.bottom {
+	bottom: 4rem;
+}

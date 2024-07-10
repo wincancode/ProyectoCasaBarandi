@@ -1,0 +1,31 @@
+.caja{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.module{
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    align-self: center;
+    background-color: aqua;
+    padding: 2rem;
+    margin: 1rem;
+    border-radius: 1.5rem;
+}
+
+.Botones{
+    display: flex;
+    justify-content: flex-end;
+    gap: 8rem;
+    margin-top: 2rem;
+}
+
+.mensaje{
+    text-align: center;
+    width: 20rem;
+    
+}

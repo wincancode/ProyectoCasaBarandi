@@ -1,0 +1,270 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Beneficiado {
+  IdBeneficiado Int @id @default(autoincrement())
+  CIBeneficiado String @unique
+  NombreBeneficiado String 
+  Sexo String 
+  TlfnBeneficiado String
+  EmailBeneficiado String
+  Comunidad Comunidad @relation(fields: [IdComunidad], references: [IdComunidad])
+  IdComunidad Int
+  Donaciones Donacion[]
+  Representa Representa[]  @relation("Representa")
+  Representado Representa[] @relation("Representado")
+  Eventos EventoEnlistaBeneficiado[]
+  DiagnosticoPorEspecialidadEnJornada DiagnosticoPorEspecialidadParaBeneficiadoEnJornada[]
+  RespuestaParaPreguntaEnEncuestaConOpciones RespuestaDePreguntaDeBeneficiarioEnEncuestaConOpciones[]
+  RespuestaParaPreguntaEnEncuestaSinOpciones RespuestaDePreguntaDeBeneficiarioEnEncuestaSinOpciones[]
+}
+
+model Comunidad {
+  IdComunidad Int @id @default(autoincrement())
+  NombreComunidad String
+  Beneficiados Beneficiado[]
+}
+
+model Donacion {
+  IdDonacion Int @id @default(autoincrement())
+  Producto String
+  Cantidad Decimal
+  Fecha DateTime
+  Estado String // Tres posibles estados: "listo", "pendiente", "cancelado"
+  Beneficiado Beneficiado @relation(fields: [IdBeneficiado], references: [IdBeneficiado])
+  IdBeneficiado Int
+}
+
+model Evento {
+  IdEvento Int @id @default(autoincrement())
+  Descripcion String
+  Fecha DateTime
+  Responsable String
+  Tipo String
+
+  // Jerarquia de posibles tipos de los eventos
+  CursosFormales CursosFormales?
+  JornadaSalud JornadaSalud?
+  JornadaAmbiental JornadaAmbiental?
+  JornadaCultural JornadaCultural?
+  JornadaFinanzas JornadaFinanzas?
+  JornadaLegal JornadaLegal?
+
+  Beneficiados EventoEnlistaBeneficiado[]
+  Colaboradores ColaboradorAyudaEvento[]
+  Encuestas EncuestaEnEvento[]
+}
+
+model CursosFormales {
+  IdCursoFormal Int @id @default(autoincrement())
+  Tipo String
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int @unique
+}
+
+model JornadaAmbiental { 
+  IdJornadaAmbiental Int @id @default(autoincrement())
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int @unique
+}
+
+model JornadaCultural {
+  IdJornadaCultural Int @id @default(autoincrement())
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int @unique
+}
+
+model JornadaFinanzas {
+  IdJornadaFinanzas Int @id @default(autoincrement())
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int @unique
+}
+
+model JornadaLegal {
+  IdJornadaLegal Int @id @default(autoincrement())
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int @unique
+}
+
+model JornadaSalud { 
+  IdJornadaSalud Int @id @default(autoincrement())
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int @unique
+  DiagnosticoPorEspecialidadParaBeneficiado DiagnosticoPorEspecialidadParaBeneficiadoEnJornada[] 
+}
+
+model Especialidad {
+  IdEspecialidad Int @id @default(autoincrement())
+  DescripcionEspecialidad String
+  DiagnosticoParaBeneficiadoEnJornada DiagnosticoPorEspecialidadParaBeneficiadoEnJornada[]
+}
+
+model Diagnostico {
+  IdDiagnostico Int @id @default(autoincrement())
+  DescripcionDiagnostico String
+  EspecialidadRequiereBeneficiadoEnJornada DiagnosticoPorEspecialidadParaBeneficiadoEnJornada[]
+}
+
+model Espacio {
+  IdEspacio Int @id @default(autoincrement())
+  NombreEspacio String
+  DireccionEspacio String
+}
+
+model Colaborador {
+  CIColaborador String @id @unique
+  Organizacion String
+  NombreColaborador String
+  Eventos ColaboradorAyudaEvento[]
+  Proyectos ColaboradorAyudaProyecto[]
+}
+
+model Proyecto {
+  IdProyecto Int @id @default(autoincrement())
+  NombreProyecto String
+  DescripcionProyecto String
+  FechaInicio DateTime
+  FechaFin DateTime
+  Colaboradores ColaboradorAyudaProyecto[]
+}
+
+model Encuesta {
+  IdEncuesta Int @id @default(autoincrement())
+  DescripcionEncuesta String
+  Eventos EncuestaEnEvento[]
+  Preguntas PreguntaEnEncuesta[]
+  RespuestasDeBeneficiadosEnEncuestas RespuestaDePreguntaDeBeneficiarioEnEncuestaConOpciones[]
+  PreguntasSinOpciones PreguntaSinOpciones[]
+  RespuestasDeBeneficiadosEnEncuestasSinOpciones RespuestaDePreguntaDeBeneficiarioEnEncuestaSinOpciones[]
+}
+
+model Pregunta {
+  IdPregunta Int @id @default(autoincrement())
+  TipoPregunta String
+  Texto String
+  Categoria String  
+  Opciones Opciones[]
+  Encuestas PreguntaEnEncuesta[]
+}
+
+model Opciones {
+  IdOpcion Int  @default(autoincrement())
+  Presunta Pregunta @relation(fields: [IdPregunta], references: [IdPregunta])
+  IdPregunta Int
+  ElegidaPorBeneficiadoEnPreguntasDeEncuestasConOpciones RespuestaDePreguntaDeBeneficiarioEnEncuestaConOpciones[]
+
+  @@id([IdPregunta, IdOpcion])
+}
+
+model Representa {
+  Representante Beneficiado @relation("Representa", fields: [IdRepresentante], references: [IdBeneficiado]) 
+  IdRepresentante Int
+  Representado Beneficiado @relation("Representado", fields: [IdRepresentado], references: [IdBeneficiado])
+  IdRepresentado Int
+
+  @@id([IdRepresentante, IdRepresentado])
+}
+
+model EventoEnlistaBeneficiado {
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int
+  Beneficiado Beneficiado @relation(fields: [IdBeneficiado], references: [IdBeneficiado])
+  IdBeneficiado Int
+
+  @@id([IdEvento, IdBeneficiado])
+}
+
+model ColaboradorAyudaEvento {
+  Colaborador Colaborador @relation(fields: [CIColaborador], references: [CIColaborador])
+  CIColaborador String
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int
+
+  @@id([CIColaborador, IdEvento])
+}
+
+model ColaboradorAyudaProyecto {
+  Colaborador Colaborador @relation(fields: [CIColaborador], references: [CIColaborador])
+  CIColaborador String
+  Proyecto Proyecto @relation(fields: [IdProyecto], references: [IdProyecto])
+  IdProyecto Int
+
+  @@id([CIColaborador, IdProyecto])
+}
+
+model EncuestaEnEvento {
+  Encuesta Encuesta @relation(fields: [IdEncuesta], references: [IdEncuesta])
+  IdEncuesta Int
+  Evento Evento @relation(fields: [IdEvento], references: [IdEvento])
+  IdEvento Int
+
+  @@id([IdEncuesta, IdEvento])
+}
+
+model PreguntaEnEncuesta {
+  Encuesta Encuesta @relation(fields: [IdEncuesta], references: [IdEncuesta])
+  IdEncuesta Int
+  Pregunta Pregunta @relation(fields: [IdPregunta], references: [IdPregunta])
+  IdPregunta Int
+
+  @@id([IdEncuesta, IdPregunta])
+} 
+
+// Relacion Cuaternaria entre Diagnostico, Especialidad, Beneficiado y JornadaSalud
+model DiagnosticoPorEspecialidadParaBeneficiadoEnJornada {
+  Diagnostico Diagnostico @relation(fields: [IdDiagnostico], references: [IdDiagnostico])
+  IdDiagnostico Int
+  Especialidad Especialidad @relation(fields: [IdEspecialidad], references: [IdEspecialidad])
+  IdEspecialidad Int
+  Beneficiado Beneficiado @relation(fields: [IdBeneficiado], references: [IdBeneficiado])
+  IdBeneficiado Int
+  JornadaSalud JornadaSalud @relation(fields: [IdJornadaSalud], references: [IdJornadaSalud])
+  IdJornadaSalud Int
+
+  @@id([IdDiagnostico, IdEspecialidad, IdBeneficiado, IdJornadaSalud])
+}
+
+model RespuestaDePreguntaDeBeneficiarioEnEncuestaConOpciones {
+  Beneficiado Beneficiado @relation(fields: [IdBeneficiado], references: [IdBeneficiado])
+  IdBeneficiado Int
+  Pregunta Encuesta @relation(fields: [IdEncuesta], references: [IdEncuesta])
+  IdEncuesta Int
+  Opcion Opciones @relation(fields: [IdPregunta, IdOpcion], references: [IdPregunta, IdOpcion])
+  IdPregunta Int
+  IdOpcion Int
+
+  @@id([IdBeneficiado, IdEncuesta, IdPregunta, IdOpcion])
+}
+
+model PreguntaSinOpciones {
+  idPregunta Int @id @default(autoincrement())
+  Encuesta Encuesta @relation(fields: [IdEncuesta], references: [IdEncuesta])
+  IdEncuesta Int
+  RespuestasDeBeneficiadosEnEncuestasSinOpciones RespuestaDePreguntaDeBeneficiarioEnEncuestaSinOpciones[]
+}
+
+model RespuestaDePreguntaDeBeneficiarioEnEncuestaSinOpciones {
+  Beneficiado Beneficiado @relation(fields: [IdBeneficiado], references: [IdBeneficiado])
+  IdBeneficiado Int
+  Encuesta Encuesta @relation(fields: [IdEncuesta], references: [IdEncuesta])
+  IdEncuesta Int
+  Pregunta PreguntaSinOpciones @relation(fields: [IdPregunta], references: [idPregunta])
+  IdPregunta Int
+  Respuesta String
+
+  @@id([IdBeneficiado, IdEncuesta, IdPregunta])
+}
+

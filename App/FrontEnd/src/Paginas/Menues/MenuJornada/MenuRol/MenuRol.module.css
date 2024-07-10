@@ -1,0 +1,23 @@
+.encuestasLista {
+	margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	padding-bottom: 5rem;
+}
+
+.realizarEncuestaButton {
+	width: 100vw;
+	height: 80vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.barchartcontainer {
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}

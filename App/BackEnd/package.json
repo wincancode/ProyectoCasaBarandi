@@ -1,0 +1,23 @@
+{
+  "name": "casa_barandi_backend",
+  "version": "1.0.0",
+  "description": "Backend del proyecto de un sistema de gestión de Casa Barandi",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "prisma": "^5.16.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.16.2"
+  }
+}

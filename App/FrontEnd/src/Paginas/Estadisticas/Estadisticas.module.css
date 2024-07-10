@@ -1,0 +1,12 @@
+.barra{
+    position: sticky;
+    bottom: 0;
+    background-color: #f2f2f2;
+    border-top: 2px solid rgb(149, 200, 255);
+}
+
+.modules{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
