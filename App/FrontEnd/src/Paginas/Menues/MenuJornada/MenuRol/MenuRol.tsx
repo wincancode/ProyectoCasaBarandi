@@ -79,7 +79,7 @@ const EncuestasRealizadas: React.FC = () => {
 };
 
 const Estadisticas: React.FC = () => {
-	const [mockStats, _] = useState([
+	const [mockStats] = useState([
 		{ id: 0, label: 'Hombres', value: 20 },
 		{ id: 1, label: 'Mujeres', value: 86 },
 		{ id: 2, label: 'Otro', value: 2 }
