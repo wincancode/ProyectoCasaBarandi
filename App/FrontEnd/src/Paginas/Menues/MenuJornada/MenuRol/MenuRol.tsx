@@ -1,4 +1,4 @@
-import { Button, Fab, Typography } from '@mui/material';
+import {Typography } from '@mui/material';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import PollIcon from '@mui/icons-material/Poll';
 import styles from './MenuRol.module.css';
@@ -42,16 +42,6 @@ const EncuestasRealizadas: React.FC = () => {
 	return <div className={styles.encuestasLista}>{encuestasRealizadas}</div>;
 };
 
-const RealizarEncuesta: React.FC = () => {
-	return (
-		<div className={styles.realizarEncuestaButton}>
-			<Button variant="outlined" color="primary">
-				Empezar encuesta
-			</Button>
-		</div>
-	);
-};
-
 const Estadisticas: React.FC = () => {
 	const [mockStats, _] = useState([
 		{ id: 0, label: 'Hombres', value: 20 },
@@ -59,7 +49,7 @@ const Estadisticas: React.FC = () => {
 		{ id: 2, label: 'Otro', value: 2 }
 	]);
 
-	const [dataset, a] = useState([
+	const [dataset] = useState([
 		{
 			comunidad: '25 de marzo',
 			label: 'aasasa',

@@ -1,4 +1,4 @@
-import { Box, Modal, Typography, Button } from "@mui/material";
+import { Modal, Typography, Button } from "@mui/material";
 import style from "./ModalSiNo.module.css";
 
 interface props {

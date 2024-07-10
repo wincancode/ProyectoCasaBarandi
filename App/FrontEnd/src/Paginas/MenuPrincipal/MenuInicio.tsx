@@ -1,15 +1,6 @@
-import {
-	Card,
-	CardActionArea,
-	CardMedia,
-	CardContent,
-	Typography,
-	Paper,
-	Box
-} from '@mui/material';
+import { Box } from '@mui/material';
 import logo from '../../assets/LogoUcab.png';
 import styles from './MenuInicio.module.css';
-import { yellow } from '@mui/material/colors';
 
 const MenuInicio: React.FC = () => {
 	return (

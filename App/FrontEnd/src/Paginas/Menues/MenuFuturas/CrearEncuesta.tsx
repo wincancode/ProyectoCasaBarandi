@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
 	Container,
 	TextField,
@@ -33,8 +33,7 @@ const CrearEncuesta = () => {
 		const newPreguntas = [...encuesta.preguntas];
 		newPreguntas[preguntaIndex].opciones.push('');
 		setEncuesta({ ...encuesta, preguntas: newPreguntas });
-  };
-  
+	};
 
 	return (
 		<Container maxWidth="sm">

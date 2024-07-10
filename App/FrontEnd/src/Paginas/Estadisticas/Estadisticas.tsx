@@ -10,7 +10,7 @@ import {
 const Estadisticas: React.FC = () => {
 	const [value, setValue] = React.useState(0);
 
-	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+	const handleChange = (_, newValue: number) => {
 		setValue(newValue);
 	};
 

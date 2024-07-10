@@ -13,7 +13,7 @@ import {
 import InicioSesion from './Paginas/InicioDeSesion/InicioSesion';
 import MenuInicio from './Paginas/MenuPrincipal/MenuInicio';
 import CrearJornada from './Paginas/Menues/MenuFuturas/CrearJornada';
-import { amber, cyan, green, yellow } from '@mui/material/colors';
+import {  cyan, green, yellow } from '@mui/material/colors';
 import MenuRol from 'Paginas/Menues/MenuJornada/MenuRol/MenuRol';
 
 const blueTheme = createTheme({
