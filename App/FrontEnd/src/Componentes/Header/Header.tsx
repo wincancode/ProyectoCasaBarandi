@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import { indigo } from '@mui/material/colors';
 
 interface props {
 	titulo: string;
