@@ -11,15 +11,13 @@ const BotonEncuesta: React.FC<props> = ({ titulo, NoPreguntas }) => {
 	return (
 		<Box className={styles.container}>
 			<Box className={styles.stack}>
-				<Stack>
-					<Button variant="contained">
-						<Box className={styles.objeto}>
-							<Typography variant="body1">{titulo}</Typography>
-							<Typography variant="body2">{NoPreguntas}</Typography>
-							<BorderColorIcon />
-						</Box>
-					</Button>
-				</Stack>
+				<Button fullWidth variant="contained">
+					<Box className={styles.objeto}>
+						<Typography variant="body1">{titulo}</Typography>
+						<Typography variant="body2">{NoPreguntas}</Typography>
+						<BorderColorIcon />
+					</Box>
+				</Button>
 			</Box>
 		</Box>
 	);

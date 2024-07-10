@@ -1,6 +1,7 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import logo from '../../assets/LogoUcab.png';
 import styles from './MenuInicio.module.css';
+import { Link } from 'react-router-dom';
 
 const MenuInicio: React.FC = () => {
 	return (
@@ -9,9 +10,40 @@ const MenuInicio: React.FC = () => {
 				<img src={logo} />
 			</div>
 			<div className={styles.botones}>
-				<Box sx={{ width: '100%', height: '15vh', bgcolor: '#ffcf33' }}></Box>
-				<Box sx={{ width: '100%', height: '15vh', bgcolor: '#00bcd4' }}></Box>
-				<Box sx={{ width: '100%', height: '15vh', bgcolor: '#357a38' }}></Box>
+				<div onClick={() => (window.location.href = '/jornadas-futuras')}>
+					<Box
+						justifyContent={'center'}
+						alignContent={'center'}
+						textAlign={'center'}
+						sx={{
+							width: '100vw',
+							height: '15vh',
+							bgcolor: '#ffcf33'
+						}}
+					>
+						<Typography variant={'h4'}>Jornadas futuras</Typography>
+					</Box>
+				</div>
+				<div onClick={() => (window.location.href = '/jornadas-anteriores')}>
+					<Box
+						justifyContent={'center'}
+						alignContent={'center'}
+						textAlign={'center'}
+						sx={{ width: '100vw', height: '15vh', bgcolor: '#00bcd4' }}
+					>
+						<Typography variant={'h4'}>Jornadas realizadas</Typography>
+					</Box>
+				</div>
+				<div onClick={() => (window.location.href = '/listaRoles')}>
+					<Box
+						justifyContent={'center'}
+						alignContent={'center'}
+						textAlign={'center'}
+						sx={{ width: '100vw', height: '15vh', bgcolor: '#357a38' }}
+					>
+						<Typography variant={'h4'}>Trabajar en jornada</Typography>
+					</Box>
+				</div>
 			</div>
 		</div>
 	);

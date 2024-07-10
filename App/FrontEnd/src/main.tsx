@@ -12,8 +12,9 @@ import {
 } from 'react-router-dom';
 import MenuInicio from './Paginas/MenuPrincipal/MenuInicio';
 import CrearJornada from './Paginas/Menues/MenuFuturas/CrearJornada';
-import {  cyan, green, yellow } from '@mui/material/colors';
+import { amber, cyan, yellow } from '@mui/material/colors';
 import MenuRol from 'Paginas/Menues/MenuJornada/MenuRol/MenuRol';
+import ListaRoles from 'Paginas/Menues/MenuJornada/ListaRoles/ListaRoles';
 
 const blueTheme = createTheme({
 	palette: {
@@ -26,7 +27,11 @@ const blueTheme = createTheme({
 const greenTheme = createTheme({
 	palette: {
 		mode: 'light',
-		primary: green,
+		primary: {
+			main: '#27632a',
+			dark: '#124116',
+			light: '#00a152'
+		},
 		secondary: cyan
 	}
 });
@@ -34,7 +39,7 @@ const greenTheme = createTheme({
 const yellowTheme = createTheme({
 	palette: {
 		mode: 'light',
-		primary: yellow,
+		primary: amber,
 		secondary: {
 			main: '#27632a',
 			dark: '#124116',
@@ -57,14 +62,14 @@ const BarandiTheme = ({ children }) => {
 		case '/jornadas-futuras':
 			theme = yellowTheme;
 			break;
-		case 'jornadas-anteriores':
+		case '/jornadas-anteriores':
 			theme = blueTheme;
 			break;
-		case 'jornada-actual':
+		case '/listaRoles':
 			theme = greenTheme;
 			break;
 		default:
-			theme = blueTheme;
+			theme = greenTheme;
 	}
 
 	return (
@@ -104,6 +109,14 @@ const router = createBrowserRouter([
 		element: (
 			<BarandiTheme>
 				<Estadisticas />
+			</BarandiTheme>
+		)
+	},
+	{
+		path: '/listaRoles',
+		element: (
+			<BarandiTheme>
+				<ListaRoles />
 			</BarandiTheme>
 		)
 	},

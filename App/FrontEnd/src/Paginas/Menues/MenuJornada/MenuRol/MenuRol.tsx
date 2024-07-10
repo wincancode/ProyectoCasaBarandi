@@ -1,4 +1,4 @@
-import {Typography } from '@mui/material';
+import { Box, Dialog, Typography } from '@mui/material';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import PollIcon from '@mui/icons-material/Poll';
 import styles from './MenuRol.module.css';
@@ -34,12 +34,48 @@ const EncuestasRealizadas: React.FC = () => {
 	const encuestasRealizadas = mockData.map((encuesta) => {
 		return (
 			<BotonLista
+				onClick={() => setDialogOpen(true)}
 				titulo={encuesta.nombre + ' ' + encuesta.apellido}
 				subtitulo={encuesta.cedula}
 			/>
 		);
 	});
-	return <div className={styles.encuestasLista}>{encuestasRealizadas}</div>;
+
+	const [dialogopen, setDialogOpen] = useState(false);
+
+	return (
+		<>
+			<Dialog open={dialogopen} onClose={() => setDialogOpen(false)}>
+				<Box className={styles.dialogo}>
+					{/*fetch from backend */}
+					<Typography variant="h4">Juan Perez</Typography>
+					<Typography variant="h5">C.I: 30437298</Typography>
+					<br />
+					<div className={styles.respuestasStack}>
+						<Typography>Pregunta 1: respuesta 1</Typography>
+						<Typography>Pregunta 2: respuesta 2</Typography>
+						<Typography>Pregunta 3: respuesta 3</Typography>
+						<Typography>Pregunta 4: respuesta 4</Typography>
+						<Typography>Pregunta 5: respuesta 5</Typography>
+						<Typography>Pregunta 6: respuesta 6</Typography>
+						<Typography>Pregunta 4: respuesta 4</Typography>
+						<Typography>Pregunta 5: respuesta 5</Typography>
+						<Typography>Pregunta 6: respuesta 6</Typography>
+						<Typography>Pregunta 4: respuesta 4</Typography>
+						<Typography>Pregunta 5: respuesta 5</Typography>
+						<Typography>Pregunta 6: respuesta 6</Typography>
+						<Typography>Pregunta 4: respuesta 4</Typography>
+						<Typography>Pregunta 5: respuesta 5</Typography>
+						<Typography>Pregunta 6: respuesta 6</Typography>
+						<Typography>Pregunta 4: respuesta 4</Typography>
+						<Typography>Pregunta 5: respuesta 5</Typography>
+						<Typography>Pregunta 6: respuesta 6</Typography>
+					</div>
+				</Box>
+			</Dialog>
+			;<div className={styles.encuestasLista}>{encuestasRealizadas}</div>
+		</>
+	);
 };
 
 const Estadisticas: React.FC = () => {

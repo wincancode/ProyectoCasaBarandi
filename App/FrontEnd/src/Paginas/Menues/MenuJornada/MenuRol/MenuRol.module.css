@@ -6,6 +6,19 @@
 	padding-bottom: 5rem;
 }
 
+.dialogo {
+	width: 80vw;
+	height: 60vh;
+	padding: 2rem;
+	
+}
+
+.respuestasStack {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
 .realizarEncuestaButton {
 	width: 100vw;
 	height: 80vh;
@@ -15,7 +28,6 @@
 }
 
 .barchartcontainer {
-
 	display: flex;
 	justify-content: center;
 	align-items: center;

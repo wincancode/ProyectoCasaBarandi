@@ -17,23 +17,30 @@ import { Header } from 'Componentes/Header/Header';
 import React from 'react';
 import { useState } from 'react';
 
+const mockJornadasCreadas = [
+	{
+		nombre: 'jornada de salud ambiental',
+		fecha: '11-09-2024'
+	},
+	{
+		nombre: 'jornada de revision de mastologia',
+		fecha: '11-12-2024'
+	},
+	{
+		nombre: 'jornada de revision de pediatria',
+		fecha: '20-3-2025'
+	}
+];
+
 const JornadasCreadas: React.FC = () => {
+	const jornadas = mockJornadasCreadas.map((jornada) => (
+		<BotonLista titulo={jornada.nombre} subtitulo={jornada.fecha} />
+	));
+
 	return (
 		<>
 			<div className={styles.caja}>
-				<Stack spacing={'8px'}>
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-					<BotonJornada titulo="El pepe" fecha="11-09-2001" />
-				</Stack>
+				<Stack spacing={'8px'}>{jornadas}</Stack>
 			</div>
 		</>
 	);
@@ -179,9 +186,8 @@ const CrearJornada: React.FC = () => {
 const EncuestasCreadas: React.FC = () => {
 	return (
 		<div>
-			<Header titulo="Encuestas Creadas"></Header>
 			<div className={styles.caja}>
-				<Stack spacing={'8px'}>
+				<Stack spacing={'0px'}>
 					<BotonEncuesta titulo="Asistencia" NoPreguntas="20" />;
 					<BotonEncuesta titulo="Formato caracas" NoPreguntas="20" />;
 					<BotonEncuesta titulo="Nombre Encuesta" NoPreguntas="20" />;
@@ -195,6 +201,7 @@ import { Add, Delete, Event, Poll, Save } from '@mui/icons-material';
 import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
 import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
 import CrearEncuesta from './CrearEncuesta';
+import BotonLista from 'Componentes/BotonLista/BotonLista';
 
 const JornadasFuturas: React.FC = () => {
 	const [creandoJornada, setCreandoJornada] = useState(false);

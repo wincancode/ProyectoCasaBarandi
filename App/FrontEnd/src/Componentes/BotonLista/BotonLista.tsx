@@ -5,13 +5,14 @@ import styles from './BotonJornada.module.css';
 interface props {
 	titulo: string;
 	subtitulo: string;
+	onClick?: () => void;
 }
 
-const BotonLista: React.FC<props> = ({ titulo, subtitulo }) => {
+const BotonLista: React.FC<props> = ({ titulo, subtitulo, onClick }) => {
 	return (
 		<div className={styles.container}>
 			<div className={styles.stack}>
-				<Button color="primary" variant="contained" fullWidth>
+				<Button onClick={onClick} color="primary" variant="contained" fullWidth>
 					<div className={styles.objeto}>
 						<Typography variant="body1">{titulo}</Typography>
 						<div className={styles.subtitulo}>
