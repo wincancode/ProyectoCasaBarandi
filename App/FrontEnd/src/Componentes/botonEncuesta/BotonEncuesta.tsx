@@ -1,4 +1,5 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, 
+  Typography } from '@mui/material';
 import styles from './BotonEncuesta.module.css';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 

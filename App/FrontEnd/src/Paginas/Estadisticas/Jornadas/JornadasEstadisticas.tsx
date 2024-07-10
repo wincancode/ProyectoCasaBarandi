@@ -1,11 +1,8 @@
 import {
-	Box,
-	Container,
 	FormControl,
 	InputLabel,
 	MenuItem,
 	Select,
-	Typography
 } from '@mui/material';
 import EstadisticaDona from '../../../Componentes/EstadisticaDona/EstadisticaDona';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -20,7 +17,7 @@ const JornadasEstadisticas: React.FC = () => {
 
 	const [comparativa, setComparativa] = React.useState('1');
 
-	const [gruposEtarios, _] = useState([
+	const [gruposEtarios] = useState([
 		{ id: 0, value: 5, label: 'infante' },
 		{ id: 1, value: 20, label: 'niño' },
 		{ id: 2, value: 5, label: 'adolescente' },
@@ -28,7 +25,7 @@ const JornadasEstadisticas: React.FC = () => {
 		{ id: 4, value: 0, label: 'adulto mayor' }
 	]);
 
-	const [genero, g] = useState([
+	const [genero] = useState([
 		{
 			id: 0,
 			value: 20,
@@ -46,7 +43,7 @@ const JornadasEstadisticas: React.FC = () => {
 		}
 	]);
 
-	const [comunidades, c] = useState([
+	const [comunidades] = useState([
 		{
 			id: 0,
 			value: 10,

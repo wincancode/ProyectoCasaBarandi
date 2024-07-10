@@ -1,7 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import logo from '../../assets/LogoUcab.png';
 import styles from './MenuInicio.module.css';
-import { Link } from 'react-router-dom';
 
 const MenuInicio: React.FC = () => {
 	return (

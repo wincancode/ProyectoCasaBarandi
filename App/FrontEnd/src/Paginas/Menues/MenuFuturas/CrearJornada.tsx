@@ -9,7 +9,6 @@ import {
 	Typography,
 	Button
 } from '@mui/material';
-import BotonJornada from 'Componentes/BotonJornada/BotonJornada';
 import styles from './CrearJornada.module.css';
 
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';

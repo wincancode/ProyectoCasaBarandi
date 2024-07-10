@@ -1,11 +1,5 @@
 import React from 'react';
 import JornadasEstadisticas from './Jornadas/JornadasEstadisticas';
-import { Box, Tab, Tabs } from '@mui/material';
-import styles from './Estadisticas.module.css';
-import {
-	a11yProps,
-	CustomTabPanel
-} from '../../Componentes/CustomTabPanel/CustomTabPanel';
 import { Header } from 'Componentes/Header/Header';
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
 

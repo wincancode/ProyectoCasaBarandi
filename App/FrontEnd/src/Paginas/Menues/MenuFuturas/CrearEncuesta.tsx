@@ -17,7 +17,6 @@ import {
 	Radio
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { Height, Padding } from '@mui/icons-material';
 
 const CrearEncuesta = () => {
 	const [encuesta, setEncuesta] = useState({
