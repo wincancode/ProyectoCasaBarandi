@@ -10,7 +10,6 @@ import {
 	RouterProvider,
 	useLocation
 } from 'react-router-dom';
-import InicioSesion from './Paginas/InicioDeSesion/InicioSesion';
 import MenuInicio from './Paginas/MenuPrincipal/MenuInicio';
 import CrearJornada from './Paginas/Menues/MenuFuturas/CrearJornada';
 import {  cyan, green, yellow } from '@mui/material/colors';
