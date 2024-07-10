@@ -11,11 +11,6 @@ import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBot
 
 const Estadisticas: React.FC = () => {
 	const [tab, setTab] = React.useState('Ultima jornada');
-
-	const handleChange = (_, newValue: number) => {
-		setValue(newValue);
-	};
-
 	return (
 		<>
 			<Header titulo="Jornadas anteriores" />
