@@ -19,11 +19,12 @@ const BotonSticky: React.FC<props> = (props) => {
     [styles.right]: props.positionx === "right",
     [styles.top]: props.positiony === "top",
     [styles.bottom]: props.positiony === "bottom",
+	
   });
 
   return (
     <div className={classes}>
-      <Fab onClick={props.onClick} color="secondary">
+      <Fab variant="extended" onClick={props.onClick} color="secondary">
         {props.Logo}
         <Typography variant="body2">{props.text}</Typography>
       </Fab>
