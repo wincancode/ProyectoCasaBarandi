@@ -10,6 +10,7 @@ import BotonLista from "Componentes/BotonLista/BotonLista";
 import BotonSticky from "Componentes/BotonSticky/BotonSticky";
 import EstadisticaDona from "Componentes/EstadisticaDona/EstadisticaDona";
 import { BarChart } from "@mui/x-charts";
+import RealizarFormato from "./RealizarFormato";
 
 const roles = ["mastologia", "ginecologia", "pediatria", "asistencia"];
 const mockData = [
@@ -134,7 +135,7 @@ const MenuRol: React.FC = () => {
 
       {tab === "Encuestados" ? (
         hacerEncuesta === true ? (
-          <div></div>
+          <RealizarFormato />
         ) : (
           <EncuestasRealizadas />
         )
@@ -142,18 +143,23 @@ const MenuRol: React.FC = () => {
         <Estadisticas />
       )}
 
-      <BotonSticky
-        positionx="right"
-        positiony="bottom"
-        Logo={
-          <>
-            <EditNoteIcon />
-            <Typography variant="body2">Realizar Encuesta</Typography>
-          </>
-        }
-        variant="extended"
-        onClick={() => setHacerEncuesta(true)}
-      />
+      {hacerEncuesta === true ? (
+        <></>
+      ) : (
+        <BotonSticky
+          positionx="right"
+          positiony="bottom"
+          Logo={
+            <>
+              <EditNoteIcon />
+              <Typography variant="body2">Realizar Encuesta</Typography>
+            </>
+          }
+          variant="extended"
+          onClick={() => setHacerEncuesta(true)}
+        />
+      )}
+
       <BarandiBottomNavigation
         icons={[<PollIcon />, <EditNoteIcon />]}
         tabs={["Encuestados", "Estadisticas"]}
