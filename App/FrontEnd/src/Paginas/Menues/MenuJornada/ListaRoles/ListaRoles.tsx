@@ -17,7 +17,7 @@ const ListaRoles: React.FC = () => {
 
 	return (
 		<>
-			<Header titulo="Elige tu rol asignado" />
+			<Header titulo="roles" />
 
 			<div
 				style={{

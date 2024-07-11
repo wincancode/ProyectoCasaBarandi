@@ -45,36 +45,70 @@ const JornadasCreadas: React.FC = () => {
 	);
 };
 
-const SeleccionRol: React.FC = () => {
-	const [rol, setrol] = React.useState('1');
-	const [encuestas, setEncuestas] = React.useState('Si');
+interface SeleccionRolProps {
+	value: {
+		id: number;
+		nombreRol: string;
+		idEncuesta: string;
+	};
+
+	onChange: (newValue: {
+		id: number;
+		nombreRol: string;
+		idEncuesta: string;
+	}) => void;
+}
+
+const SeleccionRol: React.FC<SeleccionRolProps> = (props) => {
+	// Initialize encuesta state with a valid default if props.value.idEncuesta is not a valid option
+	const validEncuestaValues = ['1', '2']; // Assuming these are the only valid values
+	const defaultEncuesta = validEncuestaValues.includes(props.value.idEncuesta)
+		? props.value.idEncuesta
+		: validEncuestaValues[0];
+	const [, setEncuesta] = React.useState(defaultEncuesta);
+
+	// Handle changes in the TextField
+	const handleNombreRolChange = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		props.onChange({ ...props.value, nombreRol: event.target.value });
+	};
+
+	// Handle changes in the Select
+	const handleEncuestaChange = (
+		event: SelectChangeEvent<{ value: unknown }>
+	) => {
+		const newEncuesta = event.target.value as string;
+		// Ensure the newEncuesta is a valid value, otherwise revert to a default
+		if (!validEncuestaValues.includes(newEncuesta)) {
+			setEncuesta(defaultEncuesta);
+			props.onChange({ ...props.value, idEncuesta: defaultEncuesta });
+		} else {
+			setEncuesta(newEncuesta);
+			props.onChange({ ...props.value, idEncuesta: newEncuesta });
+		}
+	};
 
 	return (
 		<div className={styles.rows}>
 			<FormControl fullWidth>
-				<InputLabel id="demo-simple-select-label">Rol</InputLabel>
-				<Select
-					labelId="demo-simple-select-label"
-					id="demo-simple-select"
-					value={rol}
-					label="dia"
-					onChange={(event) => setrol(event.target.value as string)}
-				>
-					<MenuItem value={1}>1</MenuItem>
-					<MenuItem value={2}>2</MenuItem>
-				</Select>
+				<TextField
+					id="standard-basic"
+					label="Nombre Rol"
+					value={props.value.nombreRol}
+					onChange={handleNombreRolChange}
+				/>
 			</FormControl>
 			<FormControl fullWidth>
 				<InputLabel id="demo-simple-select-label">Encuesta</InputLabel>
 				<Select
 					labelId="demo-simple-select-label"
 					id="demo-simple-select"
-					value={encuestas}
 					label="Encuesta"
-					onChange={(event) => setEncuestas(event.target.value as string)}
+					onChange={handleEncuestaChange}
 				>
-					<MenuItem value={1}>Dia</MenuItem>
-					<MenuItem value={2}>Noche</MenuItem>
+					<MenuItem value="1">Dia</MenuItem>
+					<MenuItem value="2">Noche</MenuItem>
 				</Select>
 			</FormControl>
 		</div>
@@ -84,7 +118,10 @@ const SeleccionRol: React.FC = () => {
 const CrearJornada: React.FC = () => {
 	const fecha = new Date();
 
-	const [agregaciones, setAgregaciones] = useState<JSX.Element[]>([]);
+	// Step 1: Define state for SeleccionRol values
+	const [seleccionRoles, setSeleccionRoles] = useState<
+		Array<{ id: number; nombreRol: string; idEncuesta: string }>
+	>([]);
 
 	const [dia, setDia] = useState(fecha.getDate());
 	const [mes, setMes] = useState(fecha.getMonth());
@@ -119,8 +156,10 @@ const CrearJornada: React.FC = () => {
 		return renderOptions(1, daysInMonth);
 	};
 
+	// Step 2: Update HandleAgregar function
 	const HandleAgregar = () => {
-		setAgregaciones(agregaciones.concat(<SeleccionRol />));
+		const newSeleccionRol = { id: Date.now(), nombreRol: '', idEncuesta: '1' }; // Default values
+		setSeleccionRoles([...seleccionRoles, newSeleccionRol]);
 	};
 
 	return (
@@ -172,7 +211,18 @@ const CrearJornada: React.FC = () => {
 				</div>
 				<div className={styles.incremental}>
 					<Typography variant="h6">Asiganaciones/Roles</Typography>
-					{agregaciones}
+					{/* Step 3: Pass props to SeleccionRol components */}
+					{seleccionRoles.map((rol, index) => (
+						<SeleccionRol
+							key={index}
+							value={rol}
+							onChange={(newValue) => {
+								const updatedRoles = [...seleccionRoles];
+								updatedRoles[index] = newValue;
+								setSeleccionRoles(updatedRoles);
+							}}
+						/>
+					))}
 					<Button variant="contained" color="secondary" onClick={HandleAgregar}>
 						Agregar
 					</Button>

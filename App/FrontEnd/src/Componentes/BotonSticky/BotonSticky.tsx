@@ -6,6 +6,7 @@ import classNames from 'classnames';
 
 interface props {
 	Logo: React.ReactNode;
+	variant?: 'extended';
 	positionx: 'left' | 'right';
 	positiony: 'top' | 'bottom';
 	onClick?: () => void;
@@ -22,7 +23,7 @@ const BotonSticky: React.FC<props> = (props) => {
 
 	return (
 		<div className={classes}>
-			<Fab onClick={props.onClick} color="secondary">
+			<Fab variant={props.variant} onClick={props.onClick} color="secondary">
 				{props.Logo}
 			</Fab>
 		</div>
