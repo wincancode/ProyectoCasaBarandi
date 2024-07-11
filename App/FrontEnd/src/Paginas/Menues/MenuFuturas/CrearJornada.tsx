@@ -260,7 +260,6 @@ const JornadasFuturas: React.FC = () => {
       Logo={<Add />}
       positionx="right"
       positiony="bottom"
-      text="Crear Jornada"
     />
   );
   const stickyGuardarJornada = (

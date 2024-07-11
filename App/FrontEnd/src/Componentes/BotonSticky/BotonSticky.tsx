@@ -19,7 +19,6 @@ const BotonSticky: React.FC<props> = (props) => {
     [styles.right]: props.positionx === "right",
     [styles.top]: props.positiony === "top",
     [styles.bottom]: props.positiony === "bottom",
-	
   });
 
   return (
