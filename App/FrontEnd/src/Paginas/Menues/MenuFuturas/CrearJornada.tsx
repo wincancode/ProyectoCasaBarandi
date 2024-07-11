@@ -59,23 +59,25 @@ const JornadasCreadas: React.FC<propsJornadasCreadas> = ({
 };
 
 const SeleccionRol: React.FC = () => {
-  const [rol, setrol] = React.useState("1");
-  const [encuestas, setEncuestas] = React.useState("Si");
+  const [rol, setrol] = React.useState("");
+  const [encuestas, setEncuestas] = React.useState("");
+
+  const dataEncuesta = [
+    { id: "1", nombre: "Si" },
+    { id: "2", nombre: "No" },
+    { id: "3", nombre: "Tal vez" },
+  ];
+
+  const handleDataEncuesta = () => {
+    const data = dataEncuesta.map((encuesta) => (
+      <MenuItem value={encuesta.id}>{encuesta.nombre}</MenuItem>
+    ));
+
+    return data;
+  };
 
   return (
     <div className={styles.rows}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Rol</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={rol}
-          label="dia"
-          onChange={(event) => setrol(event.target.value as string)}>
-          <MenuItem value={1}>1</MenuItem>
-          <MenuItem value={2}>2</MenuItem>
-        </Select>
-      </FormControl>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Encuesta</InputLabel>
         <Select
@@ -84,17 +86,13 @@ const SeleccionRol: React.FC = () => {
           value={encuestas}
           label="Encuesta"
           onChange={(event) => setEncuestas(event.target.value as string)}>
-          {dataEncuesta}
+          {handleDataEncuesta()}
         </Select>
       </FormControl>
+      <TextField label={"Nombre del Rol"}></TextField>
     </div>
   );
 };
-
-const dataEncuesta = [
-  <MenuItem value="Si">Si</MenuItem>,
-  <MenuItem value="No">No</MenuItem>,
-];
 
 interface props {
   id: number | null;
@@ -262,6 +260,7 @@ const JornadasFuturas: React.FC = () => {
       Logo={<Add />}
       positionx="right"
       positiony="bottom"
+      text="Crear Jornada"
     />
   );
   const stickyGuardarJornada = (

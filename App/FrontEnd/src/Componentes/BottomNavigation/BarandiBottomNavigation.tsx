@@ -17,6 +17,7 @@ export const BarandiBottomNavigation: React.FC<props> = (props) => {
         value={tab}
         key={tab}
         color="secondary"
+        sx={{ width: "100%" }}
       />
     );
   });
@@ -28,15 +29,19 @@ export const BarandiBottomNavigation: React.FC<props> = (props) => {
         bottom: 0,
         left: 0,
         right: 0,
-        color: indigo[500],
+        zIndex: 1000,
+        backgroundColor: indigo[500],
       }}
-      elevation={10}>
+      elevation={1}>
       <BottomNavigation
         onChange={(_, newValue) => props.onchange(newValue)}
         value={props.value}
         sx={{
-          height: 80,
-          backgroundColor: "Primary",
+          height: 90,
+
+          backgroundColor: indigo[500],
+          justifyContent: "space-around",
+          gap: "1rem",
         }}
         showLabels>
         {NavigationActions}
