@@ -18,28 +18,35 @@ import { useState } from "react";
 
 const mockJornadasCreadas = [
   {
+    id: 1,
     nombre: "jornada de salud ambiental",
     fecha: "11-09-2024",
   },
   {
+    id: 2,
     nombre: "jornada de revision de mastologia",
     fecha: "11-12-2024",
   },
   {
+    id: 3,
     nombre: "jornada de revision de pediatria",
     fecha: "20-3-2025",
   },
 ];
 
-const dataEncuesta = [
-  <MenuItem value={1}>Mastologia</MenuItem>,
-  <MenuItem value={2}>Formato Caracas</MenuItem>,
-  <MenuItem value={3}>Pediatria</MenuItem>,
-];
+interface propsJornadasCreadas {
+  handleSelectJornada: (number) => void;
+}
 
-const JornadasCreadas: React.FC = () => {
+const JornadasCreadas: React.FC<propsJornadasCreadas> = ({
+  handleSelectJornada,
+}) => {
   const jornadas = mockJornadasCreadas.map((jornada) => (
-    <BotonLista titulo={jornada.nombre} subtitulo={jornada.fecha} />
+    <BotonLista
+      onClick={() => handleSelectJornada(jornada.id)}
+      titulo={jornada.nombre}
+      subtitulo={jornada.fecha}
+    />
   ));
 
   return (
@@ -65,7 +72,7 @@ const SeleccionRol: React.FC = () => {
           value={rol}
           label="dia"
           onChange={(event) => setrol(event.target.value as string)}>
-          [<MenuItem value={1}>1</MenuItem>
+          <MenuItem value={1}>1</MenuItem>
           <MenuItem value={2}>2</MenuItem>
         </Select>
       </FormControl>
@@ -84,9 +91,21 @@ const SeleccionRol: React.FC = () => {
   );
 };
 
-const CrearJornada: React.FC = () => {
-  const fecha = new Date();
+const dataEncuesta = [
+  <MenuItem value="Si">Si</MenuItem>,
+  <MenuItem value="No">No</MenuItem>,
+];
 
+interface props {
+  id: number | null;
+}
+
+const CrearJornada: React.FC<props> = ({ id }) => {
+  if (id !== null) {
+    console.log("aqui va para traerse la informacion");
+  }
+
+  const fecha = new Date();
   const [agregaciones, setAgregaciones] = useState<JSX.Element[]>([]);
 
   const [dia, setDia] = useState(fecha.getDate());
@@ -171,7 +190,7 @@ const CrearJornada: React.FC = () => {
           </FormControl>
         </div>
         <div className={styles.incremental}>
-          <Typography variant="h6">Asiganaciones/Roles</Typography>
+          <Typography variant="h6">Asignar Roles de Participantes</Typography>
           {agregaciones}
           <Button variant="contained" color="secondary" onClick={HandleAgregar}>
             Agregar
@@ -182,17 +201,32 @@ const CrearJornada: React.FC = () => {
   );
 };
 
-const EncuestasCreadas: React.FC = () => {
+interface propsEncuestasCreadas {
+  handleEncuestasCreada: (number) => void;
+}
+
+const dataEncuestas = [
+  { id: 1, nombre: "Mastologia", NoPreguntas: 20 },
+  { id: 2, nombre: "Formato Caracas", NoPreguntas: 20 },
+  { id: 3, nombre: "Pediatria", NoPreguntas: 20 },
+];
+
+const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
+  handleEncuestasCreada,
+}) => {
+  const encuestas = dataEncuestas.map((encuesta) => (
+    <BotonEncuesta
+      OnClick={() => handleEncuestasCreada(encuesta.id)}
+      titulo={encuesta.nombre}
+      NoPreguntas={encuesta.NoPreguntas}
+    />
+  ));
   return (
-    <div>
+    <>
       <div className={styles.caja}>
-        <Stack spacing={"0px"}>
-          <BotonEncuesta titulo="Asistencia" NoPreguntas="20" />;
-          <BotonEncuesta titulo="Formato caracas" NoPreguntas="20" />;
-          <BotonEncuesta titulo="Nombre Encuesta" NoPreguntas="20" />;
-        </Stack>
+        <Stack spacing={"8px"}>{encuestas}</Stack>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -207,6 +241,21 @@ const JornadasFuturas: React.FC = () => {
   const [creandoEncuesta, setCreandoEncuesta] = useState(false);
   const [tab, setTab] = useState("Jornadas");
 
+  const [selectedJornadaId, setSelectedJornadaId] = useState(null);
+  const [selectedEncuestaId, setSelectedEncuestaId] = useState(null);
+
+  const handleSelectJornada = (id: number) => {
+    setSelectedJornadaId(id);
+    if (id !== null) setCreandoJornada(true);
+    console.log(id);
+  };
+
+  const handleSelectEncuesta = (id: number) => {
+    setSelectedEncuestaId(id);
+    if (id !== null) setCreandoEncuesta(true);
+    console.log(id);
+  };
+
   const stickyCrearJornada = (
     <BotonSticky
       onClick={() => setCreandoJornada(true)}
@@ -220,13 +269,17 @@ const JornadasFuturas: React.FC = () => {
       Logo={<Save />}
       positionx="right"
       positiony="bottom"
-      onClick={() => setCreandoJornada(false)}
+      onClick={() => {
+        setCreandoJornada(false), handleSelectJornada(null);
+      }}
     />
   );
   const stickyDesecharJornada = (
     <BotonSticky
       Logo={<Delete />}
-      onClick={() => setCreandoJornada(false)}
+      onClick={() => {
+        setCreandoJornada(false), handleSelectEncuesta(null);
+      }}
       positionx="left"
       positiony="bottom"
     />
@@ -245,7 +298,9 @@ const JornadasFuturas: React.FC = () => {
       Logo={<Save />}
       positionx="right"
       positiony="bottom"
-      onClick={() => setCreandoEncuesta(false)}
+      onClick={() => {
+        setCreandoEncuesta(false), handleSelectEncuesta(null);
+      }}
     />
   );
   const stickyDesecharEncuesta = (
@@ -253,7 +308,9 @@ const JornadasFuturas: React.FC = () => {
       Logo={<Delete />}
       positionx="left"
       positiony="bottom"
-      onClick={() => setCreandoEncuesta(false)}
+      onClick={() => {
+        setCreandoEncuesta(false), handleSelectEncuesta(null);
+      }}
     />
   );
   return (
@@ -263,25 +320,33 @@ const JornadasFuturas: React.FC = () => {
       {tab === "Jornadas" ? (
         creandoJornada ? (
           <>
-            <CrearJornada />
+            <CrearJornada id={selectedJornadaId} />
             {stickyGuardarJornada}
             {stickyDesecharJornada}
           </>
         ) : (
           <>
             {stickyCrearJornada}
-            <JornadasCreadas />
+            <JornadasCreadas
+              handleSelectJornada={(selectedJornadaId) =>
+                handleSelectJornada(selectedJornadaId)
+              }
+            />
           </>
         )
       ) : creandoEncuesta ? (
         <>
           {stickyDesecharEncuesta}
           {stickyGuardarEncuesta}
-          <CrearEncuesta />
+          <CrearEncuesta id={selectedEncuestaId} />
         </>
       ) : (
         <>
-          <EncuestasCreadas />
+          <EncuestasCreadas
+            handleEncuestasCreada={(selectedEncuestaId) =>
+              handleSelectEncuesta(selectedEncuestaId)
+            }
+          />
           {stickyCrearEncuesta}
         </>
       )}
