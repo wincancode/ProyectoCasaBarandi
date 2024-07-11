@@ -5,11 +5,11 @@ import React from "react";
 import classNames from "classnames";
 
 interface props {
-  Logo: React.ReactNode;
-  positionx: "left" | "right";
-  positiony: "top" | "bottom";
-  onClick?: () => void;
-  text?: string;
+	Logo: React.ReactNode;
+	variant?: 'extended';
+	positionx: 'left' | 'right';
+	positiony: 'top' | 'bottom';
+	onClick?: () => void;
 }
 
 const BotonSticky: React.FC<props> = (props) => {
@@ -21,14 +21,13 @@ const BotonSticky: React.FC<props> = (props) => {
     [styles.bottom]: props.positiony === "bottom",
   });
 
-  return (
-    <div className={classes}>
-      <Fab variant="extended" onClick={props.onClick} color="secondary">
-        {props.Logo}
-        <Typography variant="body2">{props.text}</Typography>
-      </Fab>
-    </div>
-  );
+	return (
+		<div className={classes}>
+			<Fab variant={props.variant} onClick={props.onClick} color="secondary">
+				{props.Logo}
+			</Fab>
+		</div>
+	);
 };
 
 export default BotonSticky;
