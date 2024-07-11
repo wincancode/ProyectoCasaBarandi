@@ -29,7 +29,6 @@ export const BarandiBottomNavigation: React.FC<props> = (props) => {
         left: 0,
         right: 0,
         color: indigo[500],
-		backgroundColor: "primary"
       }}
       elevation={10}>
       <BottomNavigation
@@ -37,6 +36,7 @@ export const BarandiBottomNavigation: React.FC<props> = (props) => {
         value={props.value}
         sx={{
           height: 80,
+          backgroundColor: "Primary",
         }}
         showLabels>
         {NavigationActions}
