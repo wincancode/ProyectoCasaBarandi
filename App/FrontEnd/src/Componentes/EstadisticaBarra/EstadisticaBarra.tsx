@@ -12,7 +12,7 @@ interface Props {
   tittle?: string;
 }
 
-const data3 = ["Page 1", "Page 2", "Page 3"];
+const data3 = ["Bella vista", "25 marzo", "25 de abril"];
 
 const EstadisticaBarra: React.FC<Props> = ({ tittle }) => {
   const [seriesNb, setSeriesNb] = React.useState(2);
@@ -50,21 +50,21 @@ const EstadisticaBarra: React.FC<Props> = ({ tittle }) => {
 
 const series = [
   {
-    label: "series 1",
+    label: "gripe comun",
     data: [
       2423, 2210, 764, 1879, 1478, 1373, 1891, 2171, 620, 1269, 724, 1707, 1188,
       1879, 626, 1635, 2177, 516, 1793, 1598,
     ],
   },
   {
-    label: "series 2",
+    label: "sida",
     data: [
       2362, 2254, 1962, 1336, 586, 1069, 2194, 1629, 2173, 2031, 1757, 862,
       2446, 910, 2430, 2300, 805, 1835, 1684, 2197,
     ],
   },
   {
-    label: "series 3",
+    label: "covid",
     data: [
       1145, 1214, 975, 2266, 1768, 2341, 747, 1282, 1780, 1766, 2115, 1720,
       1057, 2000, 1716, 2253, 619, 1626, 1209, 1786,
