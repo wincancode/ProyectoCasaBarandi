@@ -125,21 +125,34 @@ const Estadisticas: React.FC = () => {
 const MenuRol: React.FC = () => {
   const { idRol } = useParams();
   const [tab, setTab] = useState("Encuestados");
-	const [hacerEncuesta, setHacerEncuesta] = useState(false);
+  const [hacerEncuesta, setHacerEncuesta] = useState(false);
   if (!idRol) return <Typography>Error</Typography>;
 
   return (
     <>
       <Header titulo={"Menu del rol: " + roles[Number(idRol)]} />
 
-      {tab === "Encuestados" ? hacerEncuesta === true? <div></div>  : <EncuestasRealizadas />  : <Estadisticas />}
+      {tab === "Encuestados" ? (
+        hacerEncuesta === true ? (
+          <div></div>
+        ) : (
+          <EncuestasRealizadas />
+        )
+      ) : (
+        <Estadisticas />
+      )}
 
       <BotonSticky
         positionx="right"
         positiony="bottom"
-        Logo={<EditNoteIcon />}
-        text="Crear Encuesta"
-		onClick={() => setHacerEncuesta(true)}
+        Logo={
+          <>
+            <EditNoteIcon />
+            <Typography variant="body2">Realizar Encuesta</Typography>
+          </>
+        }
+        variant="extended"
+        onClick={() => setHacerEncuesta(true)}
       />
       <BarandiBottomNavigation
         icons={[<PollIcon />, <EditNoteIcon />]}
