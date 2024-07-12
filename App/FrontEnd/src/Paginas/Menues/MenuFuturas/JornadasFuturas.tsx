@@ -1,4 +1,4 @@
-import { Add, Save, Event, Delete, Poll } from '@mui/icons-material';
+import { Event, Poll, Add } from '@mui/icons-material';
 import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
 import { Header } from 'Componentes/Header/Header';
@@ -14,7 +14,7 @@ const JornadasFuturas: React.FC = () => {
 	const [tab, setTab] = useState('Jornadas');
 
 	const [selectedJornadaId, setSelectedJornadaId] = useState(null);
-	const [selectedEncuestaId, setSelectedEncuestaId] = useState(null);
+	const [, /*selectedEncuestaId*/ setSelectedEncuestaId] = useState(null);
 
 	const handleSelectJornada = (id: number) => {
 		setSelectedJornadaId(id);
@@ -36,7 +36,7 @@ const JornadasFuturas: React.FC = () => {
 			positiony="bottom"
 		/>
 	);
-	
+
 	const stickyCrearEncuesta = (
 		<BotonSticky
 			onClick={() => setCreandoEncuesta(true)}

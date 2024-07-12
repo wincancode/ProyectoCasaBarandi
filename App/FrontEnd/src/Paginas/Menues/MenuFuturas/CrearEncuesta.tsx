@@ -18,11 +18,6 @@ import { OkDialog } from 'Componentes/OkDialog/OkDialog';
 
 
 
-interface respuesta {
-	id: number;
-	nombre: string;
-}
-
 interface props {
 	onClose: () => void;
 }
