@@ -116,7 +116,7 @@ interface CrearEncuestaProps {
 const CrearE: React.FC<CrearEncuestaProps> = ({ onRegresar }) => {
 	return(
 		<div>
-			<BotonSticky onClick={onRegresar} Logo={  <ArrowBackIcon />} positionx="left" positiony="top" />
+			<BotonSticky onClick={onRegresar} Logo={  <ArrowBackIcon />} positionx="left" positiony="bottom" />
 			<CrearEncuesta/>
 		</div>
 	)
@@ -165,7 +165,7 @@ const CrearJornada: React.FC<CrearJornadaProps> = ({ onRegresar }) => {
 
 	return (
 		<div>
-			<BotonSticky onClick={onRegresar} Logo={  <ArrowBackIcon />} positionx="left" positiony="top" />
+			<BotonSticky onClick={onRegresar} Logo={  <ArrowBackIcon />} positionx="left" positiony="bottom" />
 			<div className={styles.container}>
 				<TextField
 					id="standard-basic"
@@ -264,7 +264,7 @@ const JornadasFuturas: React.FC = () => {
 		<BotonSticky Logo={<Save />} positionx="right" positiony="bottom" />
 	);
 	const stickyDesecharJornada = (
-		<BotonSticky Logo={<Delete />} positionx="left" positiony="bottom" />
+		<BotonSticky Logo={<Delete />} positionx="left" positiony="top" />
 	);
 
 	const stickyCrearEncuesta = (
@@ -279,7 +279,7 @@ const JornadasFuturas: React.FC = () => {
 		<BotonSticky Logo={<Save />} positionx="right" positiony="bottom" />
 	);
 	const stickyDesecharEncuesta = (
-		<BotonSticky Logo={<Delete />} positionx="left" positiony="bottom" />
+		<BotonSticky Logo={<Delete />} positionx="left" positiony="top" />
 	);
 	return (
 		<div>
