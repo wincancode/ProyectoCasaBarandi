@@ -10,11 +10,16 @@ import {
 	Button
 } from '@mui/material';
 import styles from './CrearJornada.module.css';
-
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
 import { Header } from 'Componentes/Header/Header';
 import React from 'react';
 import { useState } from 'react';
+import { Add, Delete, Event, Poll, Save } from '@mui/icons-material';
+import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
+import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
+import CrearEncuesta from './CrearEncuesta';
+import BotonLista from 'Componentes/BotonLista/BotonLista';
+import { EncuestasCreadas } from './EncuestasCreadas';
 
 const mockJornadasCreadas = [
 	{
@@ -34,9 +39,7 @@ const mockJornadasCreadas = [
 	}
 ];
 
-interface propsJornadasCreadas {
-	handleSelectJornada: (number) => void;
-}
+
 
 const JornadasCreadas: React.FC<propsJornadasCreadas> = ({
 	handleSelectJornada
@@ -202,10 +205,12 @@ const CrearJornada: React.FC<props> = ({ id }) => {
 		</div>
 	);
 };
-
-interface propsEncuestasCreadas {
-	handleEncuestasCreada: (number) => void;
+interface propsJornadasCreadas {
+	handleSelectJornada: (number) => void;
 }
+
+
+
 
 const dataEncuestas = [
 	{ id: 1, nombre: 'Mastologia', NoPreguntas: 20 },
@@ -213,30 +218,7 @@ const dataEncuestas = [
 	{ id: 3, nombre: 'Pediatria', NoPreguntas: 20 }
 ];
 
-const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
-	handleEncuestasCreada
-}) => {
-	const encuestas = dataEncuestas.map((encuesta) => (
-		<BotonEncuesta
-			OnClick={() => handleEncuestasCreada(encuesta.id)}
-			titulo={encuesta.nombre}
-			NoPreguntas={encuesta.NoPreguntas}
-		/>
-	));
-	return (
-		<>
-			<div className={styles.caja}>
-				<Stack spacing={'8px'}>{encuestas}</Stack>
-			</div>
-		</>
-	);
-};
 
-import { Add, Delete, Event, Poll, Save } from '@mui/icons-material';
-import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
-import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
-import CrearEncuesta from './CrearEncuesta';
-import BotonLista from 'Componentes/BotonLista/BotonLista';
 
 const JornadasFuturas: React.FC = () => {
 	const [creandoJornada, setCreandoJornada] = useState(false);
@@ -295,26 +277,7 @@ const JornadasFuturas: React.FC = () => {
 			positiony="bottom"
 		/>
 	);
-	const stickyGuardarEncuesta = (
-		<BotonSticky
-			Logo={<Save />}
-			positionx="right"
-			positiony="bottom"
-			onClick={() => {
-				setCreandoEncuesta(false), handleSelectEncuesta(null);
-			}}
-		/>
-	);
-	const stickyDesecharEncuesta = (
-		<BotonSticky
-			Logo={<Delete />}
-			positionx="left"
-			positiony="bottom"
-			onClick={() => {
-				setCreandoEncuesta(false), handleSelectEncuesta(null);
-			}}
-		/>
-	);
+
 	return (
 		<div>
 			<Header titulo="Jornadas futuras" />
@@ -338,9 +301,7 @@ const JornadasFuturas: React.FC = () => {
 				)
 			) : creandoEncuesta ? (
 				<>
-					{stickyDesecharEncuesta}
-					{stickyGuardarEncuesta}
-					<CrearEncuesta id={selectedEncuestaId} />
+					<CrearEncuesta onClose={() => setCreandoEncuesta(false)} />
 				</>
 			) : (
 				<>
