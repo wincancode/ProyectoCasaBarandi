@@ -18,6 +18,19 @@ import {
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
+interface Props {
+  id: number;
+  pregunta: {
+    nombre: string;
+    tipo: string;
+    opciones?: string[];
+    esObligatoria: boolean;
+    respuestaEscrita?: respuesta;
+    respuestasSeleccionables?: respuesta[];
+  };
+}
+
+
 const CrearEncuesta = () => {
 	const [encuesta, setEncuesta] = useState({
 		titulo: '',
