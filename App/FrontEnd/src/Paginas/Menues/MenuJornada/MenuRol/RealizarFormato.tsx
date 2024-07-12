@@ -1,7 +1,5 @@
 import {
-  Autocomplete,
   Button,
-  FormControl,
   Stack,
   TextField,
   Typography,
@@ -17,8 +15,7 @@ interface props {
 
 const RealizarFormato: React.FC<props> = (props) => {
   const [cedula, setCedula] = useState("");
-
-  const funtion = () => {};
+  console.log(cedula);
 
   return (
     <>
