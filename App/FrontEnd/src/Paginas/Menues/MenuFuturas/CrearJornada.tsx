@@ -14,6 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
 import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
 import CrearEncuesta from './CrearEncuesta';
+import EncuestasCreadas from './EncuestasCreadas';
 import BotonLista from 'Componentes/BotonLista/BotonLista';
 import BotonJornada from 'Componentes/BotonJornada/BotonJornada';
 import BotonPaTra from '../../../Componentes/botonpatra/BotonPaTra';
@@ -22,12 +23,6 @@ import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBot
 import { Header } from 'Componentes/Header/Header';
 import React from 'react';
 import { useState } from 'react';
-import { Add, Delete, Event, Poll, Save } from '@mui/icons-material';
-import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
-import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
-import CrearEncuesta from './CrearEncuesta';
-import BotonLista from 'Componentes/BotonLista/BotonLista';
-import { EncuestasCreadas } from './EncuestasCreadas';
 
 const mockJornadasCreadas = [
 	{
@@ -118,19 +113,16 @@ const CrearE: React.FC<CrearEncuestaProps> = ({ onRegresar }) => {
 	return(
 		<div>
 			<BotonSticky onClick={onRegresar} Logo={  <ArrowBackIcon />} positionx="left" positiony="bottom" />
-			<CrearEncuesta/>
+			<CrearEncuesta onClose={onRegresar} />
 		</div>
 	)
 }
-const CrearJornada: React.FC<CrearJornadaProps> = ({ onRegresar }) => {
-	const fecha = new Date();
-
+interface propsJornadasCreadas {
+	handleSelectJornada: (number) => void;
+}
 
 	
-const CrearJornada: React.FC<props> = ({ id }) => {
-	if (id !== null) {
-		console.log('aqui va para traerse la informacion');
-	}
+const CrearJornada: React.FC<CrearJornadaProps> = ({ onRegresar }) => {
 
 	const fecha = new Date();
 	const [agregaciones, setAgregaciones] = useState<JSX.Element[]>([]);
@@ -231,9 +223,7 @@ const CrearJornada: React.FC<props> = ({ id }) => {
 		</div>
 	);
 };
-interface propsJornadasCreadas {
-	handleSelectJornada: (number) => void;
-}
+
 
 
 
@@ -256,7 +246,7 @@ const JornadasFuturas: React.FC = () => {
 
 	const handleRegresar = () => {
     setCreandoJornada(false);
-};
+	};
 
 	const handleRegresarEncuesta = () => {
 		setCreandoEncuesta(false);
@@ -287,7 +277,7 @@ const JornadasFuturas: React.FC = () => {
 				setCreandoJornada(false), handleSelectEncuesta(null);
 			}}
 			positionx="left"
-			positiony="bottom"
+			positiony="top"
 		/>
 	);
 

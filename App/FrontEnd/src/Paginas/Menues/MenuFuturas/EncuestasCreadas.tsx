@@ -8,7 +8,7 @@ interface propsEncuestasCreadas {
 	handleEncuestasCreada: (number) => void;
 }
 
-export const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
+const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
 	handleEncuestasCreada
 }) => {
 	const [encuestasComponente, setEncuestasComponente] = useState([
@@ -41,3 +41,5 @@ export const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
 		</>
 	);
 };
+
+export default EncuestasCreadas;

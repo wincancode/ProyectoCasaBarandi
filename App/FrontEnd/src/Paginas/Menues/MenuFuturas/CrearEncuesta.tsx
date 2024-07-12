@@ -166,7 +166,7 @@ const CrearEncuesta: React.FC<props> = (props) => {
 			<BotonSticky
 				Logo={<Delete />}
 				positionx="left"
-				positiony="bottom"
+				positiony="top"
 				onClick={() => null}
 			/>
 
