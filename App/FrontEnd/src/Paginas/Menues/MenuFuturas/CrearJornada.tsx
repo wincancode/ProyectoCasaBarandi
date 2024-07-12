@@ -9,7 +9,14 @@ import {
 	Typography,
 	Button
 } from '@mui/material';
+import { Add, Delete, Event, Poll, Save } from '@mui/icons-material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
+import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
+import CrearEncuesta from './CrearEncuesta';
+import BotonLista from 'Componentes/BotonLista/BotonLista';
 import BotonJornada from 'Componentes/BotonJornada/BotonJornada';
+import BotonPaTra from '../../../Componentes/botonpatra/BotonPaTra';
 import styles from './CrearJornada.module.css';
 
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
@@ -31,6 +38,22 @@ const mockJornadasCreadas = [
 		fecha: '20-3-2025'
 	}
 ];
+
+const mockEncuestasCreadas =[
+	{
+		titulo:"Asistencia",
+		NoPreguntas:"20"
+	},
+	{
+		titulo:"Formato caracas",
+		NoPreguntas:"20"	
+	},
+	{
+		titulo:"Formato maracay",
+		NoPreguntas:"20"
+	}
+
+]
 
 const JornadasCreadas: React.FC = () => {
 	const jornadas = mockJornadasCreadas.map((jornada) => (
@@ -82,7 +105,23 @@ const SeleccionRol: React.FC = () => {
 	);
 };
 
-const CrearJornada: React.FC = () => {
+interface CrearJornadaProps {
+    onRegresar: () => void;
+}
+
+interface CrearEncuestaProps {
+	onRegresar: () => void;
+}
+
+const CrearE: React.FC<CrearEncuestaProps> = ({ onRegresar }) => {
+	return(
+		<div>
+			<BotonSticky onClick={onRegresar} Logo={  <ArrowBackIcon />} positionx="left" positiony="top" />
+			<CrearEncuesta/>
+		</div>
+	)
+}
+const CrearJornada: React.FC<CrearJornadaProps> = ({ onRegresar }) => {
 	const fecha = new Date();
 
 	const [agregaciones, setAgregaciones] = useState<JSX.Element[]>([]);
@@ -126,6 +165,7 @@ const CrearJornada: React.FC = () => {
 
 	return (
 		<div>
+			<BotonSticky onClick={onRegresar} Logo={  <ArrowBackIcon />} positionx="left" positiony="top" />
 			<div className={styles.container}>
 				<TextField
 					id="standard-basic"
@@ -184,29 +224,33 @@ const CrearJornada: React.FC = () => {
 };
 
 const EncuestasCreadas: React.FC = () => {
+	const encuestas= mockEncuestasCreadas.map((encuesta) => (
+		<BotonEncuesta titulo={encuesta.titulo} NoPreguntas={encuesta.NoPreguntas} />
+	));
 	return (
 		<div>
 			<div className={styles.caja}>
 				<Stack spacing={'0px'}>
-					<BotonEncuesta titulo="Asistencia" NoPreguntas="20" />;
-					<BotonEncuesta titulo="Formato caracas" NoPreguntas="20" />;
-					<BotonEncuesta titulo="Nombre Encuesta" NoPreguntas="20" />;
+					<Stack spacing={'8px'}>{encuestas}</Stack>
 				</Stack>
 			</div>
 		</div>
 	);
 };
 
-import { Add, Delete, Event, Poll, Save } from '@mui/icons-material';
-import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
-import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
-import CrearEncuesta from './CrearEncuesta';
-import BotonLista from 'Componentes/BotonLista/BotonLista';
 
 const JornadasFuturas: React.FC = () => {
 	const [creandoJornada, setCreandoJornada] = useState(false);
 	const [creandoEncuesta, setCreandoEncuesta] = useState(false);
 	const [tab, setTab] = useState('Jornadas');
+
+	const handleRegresar = () => {
+    setCreandoJornada(false);
+};
+
+	const handleRegresarEncuesta = () => {
+		setCreandoEncuesta(false);
+	}
 
 	const stickyCrearJornada = (
 		<BotonSticky
@@ -240,16 +284,16 @@ const JornadasFuturas: React.FC = () => {
 	return (
 		<div>
 			<Header titulo="Jornadas futuras" />
-
 			{tab === 'Jornadas' ? (
 				creandoJornada ? (
 					<>
-						<CrearJornada />
+						<CrearJornada onRegresar={handleRegresar} />
 						{stickyGuardarJornada}
 						{stickyDesecharJornada}
 					</>
 				) : (
 					<>
+						<BotonPaTra />
 						{stickyCrearJornada}
 						<JornadasCreadas />
 					</>
@@ -258,12 +302,13 @@ const JornadasFuturas: React.FC = () => {
 				<>
 					{stickyDesecharEncuesta}
 					{stickyGuardarEncuesta}
-					<CrearEncuesta />
+					<CrearE onRegresar={handleRegresarEncuesta} />
 				</>
 			) : (
 				<>
 					<EncuestasCreadas />
 					{stickyCrearEncuesta}
+					<BotonPaTra />
 				</>
 			)}
 			<BarandiBottomNavigation

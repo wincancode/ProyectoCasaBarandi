@@ -8,6 +8,7 @@ import {
 } from '../../Componentes/CustomTabPanel/CustomTabPanel';
 import { Header } from 'Componentes/Header/Header';
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
+import BotonPaTra from '../../Componentes/botonpatra/BotonPaTra';
 
 const Estadisticas: React.FC = () => {
 	const [tab, setTab] = React.useState('Ultima jornada');
@@ -19,8 +20,8 @@ const Estadisticas: React.FC = () => {
 	return (
 		<>
 			<Header titulo="Jornadas anteriores" />
+			<BotonPaTra />
 			<JornadasEstadisticas />
-
 			<BarandiBottomNavigation
 				tabs={['Ultima jornada', 'estadisticas generales', 'lista de jornadas']}
 				value={tab}

@@ -3,17 +3,21 @@ import { useState } from 'react';
 import { Header } from 'Componentes/Header/Header';
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
 import BotonLista from 'Componentes/BotonLista/BotonLista';
+import BotonPaTra from 'Componentes/botonpatra/BotonPaTra';
 
 const mockRoles = ['mastologia', 'ginecologia', 'pediatria', 'asistencia'];
 
 const ListaRoles: React.FC = () => {
 	const roles = mockRoles.map((rol) => {
 		return (
+			<div>
 			<BotonLista
 				onClick={() => (window.location.href = '/jornada-actual/1')}
 				titulo={rol}
 				subtitulo="encuesta-nombre"
 			/>
+			<BotonPaTra />
+			</div>
 		);
 	});
 

@@ -10,6 +10,7 @@ import BotonLista from 'Componentes/BotonLista/BotonLista';
 import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
 import EstadisticaDona from 'Componentes/EstadisticaDona/EstadisticaDona';
 import { BarChart } from '@mui/x-charts';
+import BotonPaTra from '../../../../Componentes/botonpatra/BotonPaTra';
 
 const roles = ['mastologia', 'ginecologia', 'pediatria', 'asistencia'];
 const mockData = [
@@ -131,6 +132,7 @@ const MenuRol: React.FC = () => {
 	return (
 		<>
 			<Header titulo={'Menu del rol: ' + roles[Number(idRol)]} />
+			<BotonPaTra />
 
 			{tab === 'Encuestados' ? <EncuestasRealizadas /> : <Estadisticas />}
 
