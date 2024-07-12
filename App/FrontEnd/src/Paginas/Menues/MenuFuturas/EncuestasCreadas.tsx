@@ -22,7 +22,7 @@ export const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
 			.from('encuestas')
 			.select('id, titulo, preguntas(id)');
 
-		let bar = encuestas.data.map((encuesta) => (
+		const bar = encuestas.data.map((encuesta) => (
 			<BotonEncuesta
 				key={encuesta.id}
 				OnClick={() => handleEncuestasCreada(encuesta.id)}

@@ -41,15 +41,15 @@ const CrearEncuesta: React.FC<props> = (props) => {
 	async function crearEncuesta() {
 		setIsLoading(true);
 		//insertar encuesta
-		let encuestaInsertada = await supabaseClient
+		const encuestaInsertada = await supabaseClient
 			.from('encuestas')
 			.insert([{ titulo: encuesta.titulo }])
 			.select();
 
 		//insertar preguntas con sus opciones e insertar en su encuesta
 		for (let i = 0; i < encuesta.preguntas.length; i++) {
-			let pregunta = encuesta.preguntas[i];
-			let preguntaInsertada = await supabaseClient
+			const pregunta = encuesta.preguntas[i];
+			const preguntaInsertada = await supabaseClient
 				.from('preguntas')
 				.insert({
 					nombre: pregunta.nombre,
@@ -58,7 +58,7 @@ const CrearEncuesta: React.FC<props> = (props) => {
 				})
 				.select();
 			if (pregunta.tipo != 'texto') {
-				let opciones = pregunta.opciones.map((opcion) => {
+				const opciones = pregunta.opciones.map((opcion) => {
 					return {
 						pregunta_id: preguntaInsertada.data[0].id,
 						opcion: opcion
