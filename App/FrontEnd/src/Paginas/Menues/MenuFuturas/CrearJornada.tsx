@@ -212,12 +212,6 @@ interface propsJornadasCreadas {
 
 
 
-const dataEncuestas = [
-	{ id: 1, nombre: 'Mastologia', NoPreguntas: 20 },
-	{ id: 2, nombre: 'Formato Caracas', NoPreguntas: 20 },
-	{ id: 3, nombre: 'Pediatria', NoPreguntas: 20 }
-];
-
 
 
 const JornadasFuturas: React.FC = () => {
