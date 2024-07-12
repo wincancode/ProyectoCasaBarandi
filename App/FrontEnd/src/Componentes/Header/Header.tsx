@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, AppBar, Toolbar, IconButton} from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 
 interface props {
 	titulo: string;
@@ -6,24 +7,23 @@ interface props {
 
 export const Header: React.FC<props> = (props) => {
 	return (
-		<Box
-			position={'sticky'}
-			top={'0'}
-			bgcolor="primary.dark"
-			justifyContent={'center'}
-			height={'5rem'}
-			width={'100%'}
-			zIndex={999}
-			alignContent={'center'}
-		>
-			<Typography
-				variant="h5"
-				color={'white'}
-				textAlign={'center'}
-				justifySelf={'center'}
-			>
-				{props.titulo}
-			</Typography>
+		<Box sx={{ flexGrow: 1 }}>
+			<AppBar position="static">
+				<Toolbar>
+					<IconButton
+						size="large"
+						edge="start"
+						color="inherit"
+						aria-label="menu"
+						sx={{ mr: 2 }}
+					>
+						<MenuIcon />
+					</IconButton>
+					<Typography variant="h6" component="div" sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}>
+						{props.titulo}
+					</Typography>
+				</Toolbar>
+			</AppBar>
 		</Box>
 	);
 };
