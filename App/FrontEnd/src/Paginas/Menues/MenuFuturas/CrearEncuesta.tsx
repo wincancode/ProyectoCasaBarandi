@@ -5,27 +5,87 @@ import {
 	TextField,
 	Button,
 	Typography,
-	Grid,
-	Select,
-	MenuItem,
-	FormControl,
-	InputLabel,
 	Card,
-	CardContent,
-	Checkbox,
-	FormControlLabel,
-	Radio
+	CardContent
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { Height, Padding } from '@mui/icons-material';
+import { CrearPregunta } from './CrearPregunta';
+import { supabaseClient } from 'supabase';
+import { BotonStickyLoader } from 'Componentes/BotonStickyLoader/BotonStickyLoader';
+import { Check, Delete, Save } from '@mui/icons-material';
+import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
+import { OkDialog } from 'Componentes/OkDialog/OkDialog';
 
-const CrearEncuesta = () => {
+interface propsEcuesta {
+	id: number;
+	pregunta: {
+		nombre: string;
+		tipo: string;
+		esObligatoria: boolean;
+		opciones?: respuesta[];
+	};
+}
+
+interface respuesta {
+	id: number;
+	nombre: string;
+}
+
+interface props {
+	onClose: () => void;
+}
+
+const CrearEncuesta: React.FC<props> = (props) => {
 	const [encuesta, setEncuesta] = useState({
 		titulo: '',
 		preguntas: [
-			{ titulo: '', tipo: 'texto', opciones: [''], esObligatoria: false }
+			{ nombre: '', tipo: 'texto', opciones: [''], esObligatoria: false }
 		]
 	});
+
+	const [doneCreating, setDoneCreating] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+
+	async function crearEncuesta() {
+		setIsLoading(true);
+		//insertar encuesta
+		let encuestaInsertada = await supabaseClient
+			.from('encuestas')
+			.insert([{ titulo: encuesta.titulo }])
+			.select();
+
+		//insertar preguntas con sus opciones e insertar en su encuesta
+		for (let i = 0; i < encuesta.preguntas.length; i++) {
+			let pregunta = encuesta.preguntas[i];
+			let preguntaInsertada = await supabaseClient
+				.from('preguntas')
+				.insert({
+					nombre: pregunta.nombre,
+					tipo: pregunta.tipo,
+					esObligatoria: pregunta.esObligatoria
+				})
+				.select();
+			if (pregunta.tipo != 'texto') {
+				let opciones = pregunta.opciones.map((opcion) => {
+					return {
+						pregunta_id: preguntaInsertada.data[0].id,
+						opcion: opcion
+					};
+				});
+				await supabaseClient.from('opciones').insert(opciones);
+			}
+
+			await supabaseClient.from('encuestas_preguntas').insert({
+				encuesta_id: encuestaInsertada.data[0].id,
+				pregunta_id: preguntaInsertada.data[0].id
+			});
+		}
+
+		setDoneCreating(true);
+		setIsLoading(false);
+	}
+
+	// const crearEncuesta_Preguntas_Opciones = useMutation(() => {{}
 
 	const [preguntaActual, setPreguntaActual] = useState(0);
 
@@ -44,7 +104,7 @@ const CrearEncuesta = () => {
 			...encuesta,
 			preguntas: [
 				...encuesta.preguntas,
-				{ titulo: '', tipo: 'texto', opciones: [''], esObligatoria: false }
+				{ nombre: '', tipo: 'texto', opciones: [''], esObligatoria: false }
 			]
 		});
 	};
@@ -71,144 +131,80 @@ const CrearEncuesta = () => {
 	};
 
 	const preguntaComponents = encuesta.preguntas.map((pregunta, index) => (
-		<Card
+		<CrearPregunta
 			key={index}
-			style={{
-				marginBottom: '20px',
-				marginTop: '20px',
-				backgroundColor: '#f5f7e3',
-				borderLeft: preguntaActual === index ? '8px solid #357a38' : 'none'
-			}}
-			onClick={() => handleCardClick(index)}
-		>
-			<CardContent>
-				<Grid container spacing={2}>
-					<Grid item xs={12}>
-						<TextField
-							fullWidth
-							label={`Pregunta ${index + 1}`}
-							variant="outlined"
-							value={pregunta.titulo}
-							onChange={(e) =>
-								handlePreguntaChange(index, 'titulo', e.target.value)
-							}
-							margin="normal"
-						/>
-					</Grid>
-					<Grid item xs={12}>
-						<FormControl fullWidth>
-							<InputLabel>Tipo de Pregunta</InputLabel>
-							<Select
-								value={pregunta.tipo}
-								label="Tipo de Pregunta"
-								onChange={(e) =>
-									handlePreguntaChange(index, 'tipo', e.target.value)
-								}
-							>
-								<MenuItem value="texto">Texto</MenuItem>
-								<MenuItem value="OpcionMultiple">Selección Simple</MenuItem>
-								<MenuItem value="seleccionMultiple">
-									Selección Múltiple
-								</MenuItem>
-							</Select>
-						</FormControl>
-					</Grid>
-					<Grid item xs={12}>
-						<FormControlLabel
-							control={
-								<Checkbox
-									checked={pregunta.esObligatoria}
-									onChange={(e) =>
-										handlePreguntaChange(
-											index,
-											'esObligatoria',
-											e.target.checked
-										)
-									}
-								/>
-							}
-							label="Es obligatoria"
-						/>
-					</Grid>
-					{pregunta.tipo !== 'texto' &&
-						pregunta.opciones.map((opcion, opcionIndex) => (
-							<Grid item xs={12} key={opcionIndex}>
-								<TextField
-									fullWidth
-									label={`Opción ${opcionIndex + 1}`}
-									variant="outlined"
-									value={opcion}
-									onChange={(e) => handleOpcionChange(index, opcionIndex, e)}
-									margin="normal"
-									InputProps={{
-										endAdornment:
-											pregunta.tipo === 'OpcionMultiple' ? (
-												<Radio disabled />
-											) : pregunta.tipo === 'seleccionMultiple' ? (
-												<Checkbox disabled />
-											) : null
-									}}
-								/>
-							</Grid>
-						))}
-					{pregunta.tipo === 'texto' && (
-						<Grid item xs={12}>
-							<TextField
-								fullWidth
-								label="Respuesta"
-								variant="standard"
-								disabled
-								margin="normal"
-							/>
-						</Grid>
-					)}
-					{pregunta.tipo !== 'texto' && (
-						<Grid item xs={12}>
-							<Button
-								onClick={() => agregarOpcion(index)}
-								startIcon={<AddCircleOutlineIcon />}
-							>
-								Agregar Opción
-							</Button>
-						</Grid>
-					)}
-				</Grid>
-			</CardContent>
-		</Card>
+			esActual={index === preguntaActual}
+			pregunta={pregunta}
+			index={index}
+			handlePreguntaChange={handlePreguntaChange}
+			handleOpcionChange={handleOpcionChange}
+			agregarOpcion={agregarOpcion}
+			handleCardClick={handleCardClick}
+		/>
 	));
 
 	return (
-		<Container maxWidth="sm">
-			<Box sx={{ padding: '1rem 1rem 8rem 1rem' }}>
-				<Card
-					style={{ backgroundColor: '#f5f7e3', borderTop: '8px solid #357a38' }}
-				>
-					<CardContent>
-						<Typography variant="h4" gutterBottom>
-							Crear Encuesta
-						</Typography>
-						<TextField
-							fullWidth
-							label="Título de la Encuesta"
-							variant="standard"
-							value={encuesta.titulo}
-							onChange={handleTituloChange}
-							margin="normal"
-						/>
-					</CardContent>
-				</Card>
-				<form onSubmit={handleSubmit}>
-					{preguntaComponents}
-					<Button
-						onClick={agregarPregunta}
-						startIcon={<AddCircleOutlineIcon />}
-						style={{ marginRight: '10px' }}
+		<>
+			<OkDialog
+				mensaje="Encuesta creada con éxito"
+				onOk={() => {
+					props.onClose();
+					setDoneCreating(false);
+				}}
+				open={doneCreating}
+			/>
+
+			<BotonStickyLoader
+				positionx="right"
+				positiony="bottom"
+				Logo={<Save />}
+				onClick={crearEncuesta}
+				success={doneCreating}
+				isLoading={isLoading}
+				successLogo={<Check />}
+			/>
+			<BotonSticky
+				Logo={<Delete />}
+				positionx="left"
+				positiony="bottom"
+				onClick={() => null}
+			/>
+
+			<Container maxWidth="sm">
+				<Box sx={{ padding: '1rem 1rem 8rem 1rem' }}>
+					<Card
+						style={{
+							backgroundColor: '#f5f7e3',
+							borderTop: '8px solid #357a38'
+						}}
 					>
-						Agregar Pregunta
-					</Button>
-				</form>
-			</Box>
-		</Container>
+						<CardContent>
+							<Typography variant="h4" gutterBottom>
+								Crear Encuesta
+							</Typography>
+							<TextField
+								fullWidth
+								label="Título de la Encuesta"
+								variant="standard"
+								value={encuesta.titulo}
+								onChange={handleTituloChange}
+								margin="normal"
+							/>
+						</CardContent>
+					</Card>
+					<form onSubmit={handleSubmit}>
+						{preguntaComponents}
+						<Button
+							onClick={agregarPregunta}
+							startIcon={<AddCircleOutlineIcon />}
+							style={{ marginRight: '10px' }}
+						>
+							Agregar Pregunta
+						</Button>
+					</form>
+				</Box>
+			</Container>
+		</>
 	);
 };
 

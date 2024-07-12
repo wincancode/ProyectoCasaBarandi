@@ -1,5 +1,3 @@
-import { BottomNavigation, Box, Tab, Tabs, Typography } from '@mui/material';
-import { useState } from 'react';
 import { Header } from 'Componentes/Header/Header';
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
 import BotonLista from 'Componentes/BotonLista/BotonLista';

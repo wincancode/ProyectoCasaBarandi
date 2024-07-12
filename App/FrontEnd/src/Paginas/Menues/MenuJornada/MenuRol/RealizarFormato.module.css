@@ -1,0 +1,16 @@
+.titulo{
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.preguntas{
+    display: flex;
+    margin-top: 1rem;
+    align-self: center;
+    justify-content: center;
+    margin-bottom: 10rem;
+}
+
+

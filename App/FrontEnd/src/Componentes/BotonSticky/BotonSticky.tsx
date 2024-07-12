@@ -6,9 +6,11 @@ import classNames from 'classnames';
 
 interface props {
 	Logo: React.ReactNode;
+	variant?: 'extended';
 	positionx: 'left' | 'right';
 	positiony: 'top' | 'bottom';
 	onClick?: () => void;
+	color?: string;
 }
 
 const BotonSticky: React.FC<props> = (props) => {
@@ -20,9 +22,16 @@ const BotonSticky: React.FC<props> = (props) => {
 		[styles.bottom]: props.positiony === 'bottom'
 	});
 
+	const sx = props.color ? { bgcolor: props.color } : {};
+
 	return (
 		<div className={classes}>
-			<Fab onClick={props.onClick} color="secondary">
+			<Fab
+				sx={sx}
+				variant={props.variant}
+				onClick={props.onClick}
+				color={'secondary'}
+			>
 				{props.Logo}
 			</Fab>
 		</div>

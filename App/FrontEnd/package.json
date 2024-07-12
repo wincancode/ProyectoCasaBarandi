@@ -16,6 +16,7 @@
     "@mui/icons-material": "^5.16.0",
     "@mui/material": "^5.16.0",
     "@mui/x-charts": "^7.9.0",
+    "@supabase/supabase-js": "^2.44.3",
     "@tanstack/react-form": "^0.25.3",
     "@tanstack/react-query": "^5.50.1",
     "@types/react-router-dom": "^5.3.3",

@@ -18,46 +18,46 @@ import BotonLista from 'Componentes/BotonLista/BotonLista';
 import BotonJornada from 'Componentes/BotonJornada/BotonJornada';
 import BotonPaTra from '../../../Componentes/botonpatra/BotonPaTra';
 import styles from './CrearJornada.module.css';
-
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
 import { Header } from 'Componentes/Header/Header';
 import React from 'react';
 import { useState } from 'react';
+import { Add, Delete, Event, Poll, Save } from '@mui/icons-material';
+import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
+import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
+import CrearEncuesta from './CrearEncuesta';
+import BotonLista from 'Componentes/BotonLista/BotonLista';
+import { EncuestasCreadas } from './EncuestasCreadas';
 
 const mockJornadasCreadas = [
 	{
+		id: 1,
 		nombre: 'jornada de salud ambiental',
 		fecha: '11-09-2024'
 	},
 	{
+		id: 2,
 		nombre: 'jornada de revision de mastologia',
 		fecha: '11-12-2024'
 	},
 	{
+		id: 3,
 		nombre: 'jornada de revision de pediatria',
 		fecha: '20-3-2025'
 	}
 ];
 
-const mockEncuestasCreadas =[
-	{
-		titulo:"Asistencia",
-		NoPreguntas:"20"
-	},
-	{
-		titulo:"Formato caracas",
-		NoPreguntas:"20"	
-	},
-	{
-		titulo:"Formato maracay",
-		NoPreguntas:"20"
-	}
 
-]
 
-const JornadasCreadas: React.FC = () => {
+const JornadasCreadas: React.FC<propsJornadasCreadas> = ({
+	handleSelectJornada
+}) => {
 	const jornadas = mockJornadasCreadas.map((jornada) => (
-		<BotonLista titulo={jornada.nombre} subtitulo={jornada.fecha} />
+		<BotonLista
+			onClick={() => handleSelectJornada(jornada.id)}
+			titulo={jornada.nombre}
+			subtitulo={jornada.fecha}
+		/>
 	));
 
 	return (
@@ -70,24 +70,25 @@ const JornadasCreadas: React.FC = () => {
 };
 
 const SeleccionRol: React.FC = () => {
-	const [rol, setrol] = React.useState('1');
-	const [encuestas, setEncuestas] = React.useState('Si');
+	const [rol, setrol] = React.useState('');
+	const [encuestas, setEncuestas] = React.useState('');
+
+	const dataEncuesta = [
+		{ id: '1', nombre: 'Si' },
+		{ id: '2', nombre: 'No' },
+		{ id: '3', nombre: 'Tal vez' }
+	];
+
+	const handleDataEncuesta = () => {
+		const data = dataEncuesta.map((encuesta) => (
+			<MenuItem value={encuesta.id}>{encuesta.nombre}</MenuItem>
+		));
+
+		return data;
+	};
 
 	return (
 		<div className={styles.rows}>
-			<FormControl fullWidth>
-				<InputLabel id="demo-simple-select-label">Rol</InputLabel>
-				<Select
-					labelId="demo-simple-select-label"
-					id="demo-simple-select"
-					value={rol}
-					label="dia"
-					onChange={(event) => setrol(event.target.value as string)}
-				>
-					<MenuItem value={1}>1</MenuItem>
-					<MenuItem value={2}>2</MenuItem>
-				</Select>
-			</FormControl>
 			<FormControl fullWidth>
 				<InputLabel id="demo-simple-select-label">Encuesta</InputLabel>
 				<Select
@@ -97,10 +98,10 @@ const SeleccionRol: React.FC = () => {
 					label="Encuesta"
 					onChange={(event) => setEncuestas(event.target.value as string)}
 				>
-					<MenuItem value={1}>Dia</MenuItem>
-					<MenuItem value={2}>Noche</MenuItem>
+					{handleDataEncuesta()}
 				</Select>
 			</FormControl>
+			<TextField label={'Nombre del Rol'}></TextField>
 		</div>
 	);
 };
@@ -124,6 +125,14 @@ const CrearE: React.FC<CrearEncuestaProps> = ({ onRegresar }) => {
 const CrearJornada: React.FC<CrearJornadaProps> = ({ onRegresar }) => {
 	const fecha = new Date();
 
+
+	
+const CrearJornada: React.FC<props> = ({ id }) => {
+	if (id !== null) {
+		console.log('aqui va para traerse la informacion');
+	}
+
+	const fecha = new Date();
 	const [agregaciones, setAgregaciones] = useState<JSX.Element[]>([]);
 
 	const [dia, setDia] = useState(fecha.getDate());
@@ -212,7 +221,7 @@ const CrearJornada: React.FC<CrearJornadaProps> = ({ onRegresar }) => {
 					</FormControl>
 				</div>
 				<div className={styles.incremental}>
-					<Typography variant="h6">Asiganaciones/Roles</Typography>
+					<Typography variant="h6">Asignar Roles de Participantes</Typography>
 					{agregaciones}
 					<Button variant="contained" color="secondary" onClick={HandleAgregar}>
 						Agregar
@@ -222,27 +231,28 @@ const CrearJornada: React.FC<CrearJornadaProps> = ({ onRegresar }) => {
 		</div>
 	);
 };
+interface propsJornadasCreadas {
+	handleSelectJornada: (number) => void;
+}
 
-const EncuestasCreadas: React.FC = () => {
-	const encuestas= mockEncuestasCreadas.map((encuesta) => (
-		<BotonEncuesta titulo={encuesta.titulo} NoPreguntas={encuesta.NoPreguntas} />
-	));
-	return (
-		<div>
-			<div className={styles.caja}>
-				<Stack spacing={'0px'}>
-					<Stack spacing={'8px'}>{encuestas}</Stack>
-				</Stack>
-			</div>
-		</div>
-	);
-};
+
+
+
 
 
 const JornadasFuturas: React.FC = () => {
 	const [creandoJornada, setCreandoJornada] = useState(false);
 	const [creandoEncuesta, setCreandoEncuesta] = useState(false);
 	const [tab, setTab] = useState('Jornadas');
+
+
+	const handleSelectJornada = (selectedJornadaId) => {
+		console.log(selectedJornadaId);
+	};
+
+	const handleSelectEncuesta = (selectedEncuestaId) => {
+		console.log(selectedEncuestaId);
+	}
 
 	const handleRegresar = () => {
     setCreandoJornada(false);
@@ -261,10 +271,24 @@ const JornadasFuturas: React.FC = () => {
 		/>
 	);
 	const stickyGuardarJornada = (
-		<BotonSticky Logo={<Save />} positionx="right" positiony="bottom" />
+		<BotonSticky
+			Logo={<Save />}
+			positionx="right"
+			positiony="bottom"
+			onClick={() => {
+				setCreandoJornada(false), handleSelectJornada(null);
+			}}
+		/>
 	);
 	const stickyDesecharJornada = (
-		<BotonSticky Logo={<Delete />} positionx="left" positiony="top" />
+		<BotonSticky
+			Logo={<Delete />}
+			onClick={() => {
+				setCreandoJornada(false), handleSelectEncuesta(null);
+			}}
+			positionx="left"
+			positiony="bottom"
+		/>
 	);
 
 	const stickyCrearEncuesta = (
@@ -274,12 +298,6 @@ const JornadasFuturas: React.FC = () => {
 			positionx="right"
 			positiony="bottom"
 		/>
-	);
-	const stickyGuardarEncuesta = (
-		<BotonSticky Logo={<Save />} positionx="right" positiony="bottom" />
-	);
-	const stickyDesecharEncuesta = (
-		<BotonSticky Logo={<Delete />} positionx="left" positiony="top" />
 	);
 	return (
 		<div>
@@ -295,18 +313,25 @@ const JornadasFuturas: React.FC = () => {
 					<>
 						<BotonPaTra />
 						{stickyCrearJornada}
-						<JornadasCreadas />
+						<JornadasCreadas
+							handleSelectJornada={(selectedJornadaId) =>
+								handleSelectJornada(selectedJornadaId)
+							}
+						/>
 					</>
 				)
 			) : creandoEncuesta ? (
 				<>
-					{stickyDesecharEncuesta}
-					{stickyGuardarEncuesta}
+					
 					<CrearE onRegresar={handleRegresarEncuesta} />
 				</>
 			) : (
 				<>
-					<EncuestasCreadas />
+					<EncuestasCreadas
+						handleEncuestasCreada={(selectedEncuestaId) =>
+							handleSelectEncuesta(selectedEncuestaId)
+						}
+					/>
 					{stickyCrearEncuesta}
 					<BotonPaTra />
 				</>
