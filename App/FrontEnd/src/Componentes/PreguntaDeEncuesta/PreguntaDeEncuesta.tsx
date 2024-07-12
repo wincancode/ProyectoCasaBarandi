@@ -16,7 +16,7 @@ interface Props {
   id: number;
   pregunta: {
     nombre: string;
-    tipo: "texto" | "seleccion simple" | "seleccion multiple";
+    tipo: "texto" | "seleccionSimple" | "seleccionMultiple";
     opciones?: string[];
     esObligatoria: boolean;
     respuestaEscrita?: respuesta;
@@ -42,10 +42,11 @@ const PreguntaSeleccion = (props: Props) => {
     <FormControl>
       <Typography variant="body1">Selecciona una respuesta</Typography>
 
-      {props.pregunta.tipo === "seleccion simple" ? (
+      {props.pregunta.tipo === "seleccionSimple" ? (
         <RadioGroup>
-          {props.pregunta.opciones?.map((respuesta) => (
+          {props.pregunta.opciones?.map((respuesta, index) => (
             <FormControlLabel
+              key={index}
               value={respuesta}
               control={<Radio />}
               label={respuesta}

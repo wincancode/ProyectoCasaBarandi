@@ -1,6 +1,7 @@
 import { Stack, Typography } from "@mui/material";
 import PreguntaDeEncuesta from "Componentes/PreguntaDeEncuesta/PreguntaDeEncuesta";
 import styles from "./RealizarFormato.module.css";
+import BotonSticky from "Componentes/BotonSticky/BotonSticky";
 
 interface props {
   id: number;
@@ -18,48 +19,60 @@ const RealizarFormato: React.FC<props> = (props) => {
             id={1}
             pregunta={{
               nombre: "Pregunta 1",
-              tipo: "seleccion simple",
+              tipo: "seleccionSimple",
+              esObligatoria: true,
+              opciones: [
+                "Opcion 1",
+                "Opcion 2",
+                "Opcion 3",
+                "Opcion 4",
+                "Opcion 5",
+              ],
+            }}
+          />
+          <PreguntaDeEncuesta
+            id={2}
+            pregunta={{
+              nombre: "Pregunta 2",
+              tipo: "seleccionMultiple",
               esObligatoria: true,
               opciones: ["Opcion 1", "Opcion 2", "Opcion 3"],
             }}
           />
           <PreguntaDeEncuesta
-            id={1}
+            id={3}
             pregunta={{
-              nombre: "Pregunta 1",
-              tipo: "seleccion multiple",
-              esObligatoria: true,
-              opciones: ["Opcion 1", "Opcion 2", "Opcion 3"],
-            }}
-          />
-          <PreguntaDeEncuesta
-            id={1}
-            pregunta={{
-              nombre: "Pregunta 1",
+              nombre: "Pregunta 3",
               tipo: "texto",
               esObligatoria: true,
               opciones: ["Opcion 1", "Opcion 2", "Opcion 3"],
             }}
           />
           <PreguntaDeEncuesta
-            id={1}
+            id={4}
             pregunta={{
-              nombre: "Pregunta 1",
+              nombre: "Pregunta 4",
               tipo: "texto",
               esObligatoria: true,
               opciones: ["Opcion 1", "Opcion 2", "Opcion 3"],
             }}
           />
           <PreguntaDeEncuesta
-            id={1}
+            id={5}
             pregunta={{
-              nombre: "Pregunta 1",
-              tipo: "seleccion multiple",
+              nombre: "Pregunta 5",
+              tipo: "seleccionMultiple",
               esObligatoria: true,
               opciones: ["Opcion 1", "Opcion 2", "Opcion 3"],
             }}
           />
         </Stack>
+        <BotonSticky
+          variant="extended"
+          Logo={<div>enviar</div>}
+          positionx="right"
+          onClick={() => console.log("enviar")}
+          positiony="bottom"></BotonSticky>
       </div>
     </>
   );
