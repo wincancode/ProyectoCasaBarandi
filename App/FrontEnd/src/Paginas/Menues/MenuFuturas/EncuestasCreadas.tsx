@@ -8,6 +8,8 @@ interface propsEncuestasCreadas {
 	handleEncuestasCreada: (number) => void;
 }
 
+
+
 export const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
 	handleEncuestasCreada
 }) => {

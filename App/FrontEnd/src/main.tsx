@@ -15,6 +15,7 @@ import CrearJornada from './Paginas/Menues/MenuFuturas/CrearJornada';
 import { amber, cyan, yellow } from '@mui/material/colors';
 import MenuRol from 'Paginas/Menues/MenuJornada/MenuRol/MenuRol';
 import ListaRoles from 'Paginas/Menues/MenuJornada/ListaRoles/ListaRoles';
+import JornadasFuturas from 'Paginas/Menues/MenuFuturas/JornadasFuturas';
 
 const blueTheme = createTheme({
 	palette: {
@@ -100,7 +101,7 @@ const router = createBrowserRouter([
 		path: 'jornadas-futuras',
 		element: (
 			<BarandiTheme>
-				<CrearJornada />
+				<JornadasFuturas />
 			</BarandiTheme>
 		)
 	},

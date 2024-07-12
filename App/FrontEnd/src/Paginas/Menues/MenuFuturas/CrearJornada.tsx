@@ -3,82 +3,29 @@ import {
 	InputLabel,
 	MenuItem,
 	Select,
-	Stack,
 	TextField,
 	SelectChangeEvent,
 	Typography,
 	Button
 } from '@mui/material';
 import styles from './CrearJornada.module.css';
-import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
-import { Header } from 'Componentes/Header/Header';
 import React from 'react';
 import { useState } from 'react';
-import { Add, Delete, Event, Poll, Save } from '@mui/icons-material';
-import BotonEncuesta from 'Componentes/botonEncuesta/BotonEncuesta';
+import { supabaseClient } from 'supabase';
+import { Save, Check, Delete } from '@mui/icons-material';
 import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
-import CrearEncuesta from './CrearEncuesta';
-import BotonLista from 'Componentes/BotonLista/BotonLista';
-import { EncuestasCreadas } from './EncuestasCreadas';
+import { BotonStickyLoader } from 'Componentes/BotonStickyLoader/BotonStickyLoader';
+import { OkDialog } from 'Componentes/OkDialog/OkDialog';
 
-const mockJornadasCreadas = [
-	{
-		id: 1,
-		nombre: 'jornada de salud ambiental',
-		fecha: '11-09-2024'
-	},
-	{
-		id: 2,
-		nombre: 'jornada de revision de mastologia',
-		fecha: '11-12-2024'
-	},
-	{
-		id: 3,
-		nombre: 'jornada de revision de pediatria',
-		fecha: '20-3-2025'
-	}
-];
+interface seleccionRolprops {
+	id: number;
+	rol: string;
+	encuesta: number;
+	opcionesEncuesta: JSX.Element[];
+	onChange: (id: number, rol: string, encuesta: number) => void;
+}
 
-
-
-const JornadasCreadas: React.FC<propsJornadasCreadas> = ({
-	handleSelectJornada
-}) => {
-	const jornadas = mockJornadasCreadas.map((jornada) => (
-		<BotonLista
-			onClick={() => handleSelectJornada(jornada.id)}
-			titulo={jornada.nombre}
-			subtitulo={jornada.fecha}
-		/>
-	));
-
-	return (
-		<>
-			<div className={styles.caja}>
-				<Stack spacing={'8px'}>{jornadas}</Stack>
-			</div>
-		</>
-	);
-};
-
-const SeleccionRol: React.FC = () => {
-	const [rol, setrol] = React.useState('');
-	const [encuestas, setEncuestas] = React.useState('');
-
-	const dataEncuesta = [
-		{ id: '1', nombre: 'Si' },
-		{ id: '2', nombre: 'No' },
-		{ id: '3', nombre: 'Tal vez' }
-	];
-
-	const handleDataEncuesta = () => {
-		const data = dataEncuesta.map((encuesta) => (
-			<MenuItem value={encuesta.id}>{encuesta.nombre}</MenuItem>
-		));
-
-		return data;
-	};
-
+const SeleccionRol: React.FC<seleccionRolprops> = (props) => {
 	return (
 		<div className={styles.rows}>
 			<FormControl fullWidth>
@@ -86,33 +33,83 @@ const SeleccionRol: React.FC = () => {
 				<Select
 					labelId="demo-simple-select-label"
 					id="demo-simple-select"
-					value={encuestas}
+					value={props.encuesta}
 					label="Encuesta"
-					onChange={(event) => setEncuestas(event.target.value as string)}
+					onChange={(event) =>
+						props.onChange(
+							props.id,
+							props.rol,
+							parseInt(event.target.value as string, 10)
+						)
+					}
 				>
-					{handleDataEncuesta()}
+					{props.opcionesEncuesta}
 				</Select>
 			</FormControl>
-			<TextField label={'Nombre del Rol'}></TextField>
+			<TextField
+				label={'Nombre del Rol'}
+				onChange={(e) =>
+					props.onChange(props.id, e.target.value, props.encuesta)
+				}
+				value={props.rol}
+			/>
 		</div>
 	);
 };
 
 interface props {
 	id: number | null;
+	onClose: () => void;
 }
 
-const CrearJornada: React.FC<props> = ({ id }) => {
-	if (id !== null) {
+export const CrearJornada: React.FC<props> = (props) => {
+	if (props.id !== null) {
 		console.log('aqui va para traerse la informacion');
 	}
 
+	const [doneCreating, setDoneCreating] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+
 	const fecha = new Date();
-	const [agregaciones, setAgregaciones] = useState<JSX.Element[]>([]);
+	const [titulo, setTitulo] = useState('');
+	const [ubicacion, setUbicacion] = useState('');
+	const [roles, setRoles] = useState([
+		{
+			id: 0,
+			rol: '',
+			encuesta: -1
+		}
+	]);
 
 	const [dia, setDia] = useState(fecha.getDate());
 	const [mes, setMes] = useState(fecha.getMonth());
 	const [año, setAño] = useState(fecha.getFullYear());
+
+	async function handleSubmit() {
+		setIsLoading(true);
+		const jornadaInsertada = await supabaseClient
+			.from('jornadas')
+			.insert({
+				Titulo: titulo,
+				fechaRealizacion: `${año}-${mes}-${dia}`,
+				ubicacion: ubicacion
+			})
+			.select();
+
+		const rolesAinsertar = roles.map((rol) => ({
+			rol: rol.rol,
+			encuesta_id: rol.encuesta,
+			jornada_id: jornadaInsertada.data[0].id
+		}));
+
+		await supabaseClient
+			.from('Roles')
+			.insert(rolesAinsertar)
+			.then((r) => console.log(r.error));
+
+		setIsLoading(false);
+		setDoneCreating(true);
+	}
 
 	const handleChange1 = (event: SelectChangeEvent) => {
 		setDia(parseInt(event.target.value as string, 10));
@@ -143,19 +140,108 @@ const CrearJornada: React.FC<props> = ({ id }) => {
 		return renderOptions(1, daysInMonth);
 	};
 
+	const [encuestasData, setEncuestasData] = React.useState<JSX.Element[]>([
+		<MenuItem>cargando</MenuItem>
+	]);
+
+	const handleDataEncuesta = async () => {
+		const dataEncuesta = await supabaseClient
+			.from('encuestas')
+			.select('titulo,id');
+
+		const data = dataEncuesta.data.map((encuesta) => (
+			<MenuItem value={encuesta.id}>{encuesta.titulo}</MenuItem>
+		));
+
+		setEncuestasData(data);
+	};
+
+	handleDataEncuesta();
+
+	const handleRolChange = (id: number, rol: string, encuesta: number) => {
+		const newRoles = roles;
+		newRoles[id] = { id, rol, encuesta };
+		setRoles(newRoles);
+
+		setAgregaciones(
+			roles.map((rol) => (
+				<SeleccionRol
+					opcionesEncuesta={encuestasData}
+					id={rol.id}
+					rol={rol.rol}
+					encuesta={rol.encuesta}
+					onChange={handleRolChange}
+				/>
+			))
+		);
+	};
+
+	const [agregaciones, setAgregaciones] = useState([
+		<SeleccionRol
+			opcionesEncuesta={encuestasData}
+			id={0}
+			rol=""
+			encuesta={1}
+			onChange={handleRolChange}
+		/>
+	]);
+
 	const HandleAgregar = () => {
-		setAgregaciones(agregaciones.concat(<SeleccionRol />));
+		setAgregaciones(
+			agregaciones.concat(
+				<SeleccionRol
+					opcionesEncuesta={encuestasData}
+					id={agregaciones.length}
+					rol=""
+					encuesta={1}
+					onChange={handleRolChange}
+				/>
+			)
+		);
 	};
 
 	return (
 		<div>
+			<OkDialog
+				mensaje="Jornada creada con éxito"
+				onOk={() => {
+					props.onClose();
+					setDoneCreating(false);
+				}}
+				open={doneCreating}
+			/>
+
+			<BotonStickyLoader
+				positionx="right"
+				positiony="bottom"
+				Logo={<Save />}
+				onClick={handleSubmit}
+				success={doneCreating}
+				isLoading={isLoading}
+				successLogo={<Check />}
+			/>
+			<BotonSticky
+				Logo={<Delete />}
+				positionx="left"
+				positiony="bottom"
+				onClick={() => null}
+			/>
+
 			<div className={styles.container}>
 				<TextField
 					id="standard-basic"
 					label="Nombre Jornada"
 					variant="standard"
+					onChange={(e) => setTitulo(e.target.value)}
+					value={titulo}
 				/>
-				<TextField id="standard-basic" label="Ubicacion" variant="standard" />
+				<TextField
+					id="standard-basic"
+					label="Ubicacion"
+					variant="standard"
+					onChange={(e) => setUbicacion(e.target.value)}
+					value={ubicacion}
+				/>
 				<div className={styles.fechacontrol}>
 					<FormControl fullWidth>
 						<InputLabel id="demo-simple-select-label">dia</InputLabel>
@@ -205,116 +291,3 @@ const CrearJornada: React.FC<props> = ({ id }) => {
 		</div>
 	);
 };
-interface propsJornadasCreadas {
-	handleSelectJornada: (number) => void;
-}
-
-
-
-
-
-
-const JornadasFuturas: React.FC = () => {
-	const [creandoJornada, setCreandoJornada] = useState(false);
-	const [creandoEncuesta, setCreandoEncuesta] = useState(false);
-	const [tab, setTab] = useState('Jornadas');
-
-	const [selectedJornadaId, setSelectedJornadaId] = useState(null);
-	const [selectedEncuestaId, setSelectedEncuestaId] = useState(null);
-
-	const handleSelectJornada = (id: number) => {
-		setSelectedJornadaId(id);
-		if (id !== null) setCreandoJornada(true);
-		console.log(id);
-	};
-
-	const handleSelectEncuesta = (id: number) => {
-		setSelectedEncuestaId(id);
-		if (id !== null) setCreandoEncuesta(true);
-		console.log(id);
-	};
-
-	const stickyCrearJornada = (
-		<BotonSticky
-			onClick={() => setCreandoJornada(true)}
-			Logo={<Add />}
-			positionx="right"
-			positiony="bottom"
-		/>
-	);
-	const stickyGuardarJornada = (
-		<BotonSticky
-			Logo={<Save />}
-			positionx="right"
-			positiony="bottom"
-			onClick={() => {
-				setCreandoJornada(false), handleSelectJornada(null);
-			}}
-		/>
-	);
-	const stickyDesecharJornada = (
-		<BotonSticky
-			Logo={<Delete />}
-			onClick={() => {
-				setCreandoJornada(false), handleSelectEncuesta(null);
-			}}
-			positionx="left"
-			positiony="bottom"
-		/>
-	);
-
-	const stickyCrearEncuesta = (
-		<BotonSticky
-			onClick={() => setCreandoEncuesta(true)}
-			Logo={<Add />}
-			positionx="right"
-			positiony="bottom"
-		/>
-	);
-
-	return (
-		<div>
-			<Header titulo="Jornadas futuras" />
-
-			{tab === 'Jornadas' ? (
-				creandoJornada ? (
-					<>
-						<CrearJornada id={selectedJornadaId} />
-						{stickyGuardarJornada}
-						{stickyDesecharJornada}
-					</>
-				) : (
-					<>
-						{stickyCrearJornada}
-						<JornadasCreadas
-							handleSelectJornada={(selectedJornadaId) =>
-								handleSelectJornada(selectedJornadaId)
-							}
-						/>
-					</>
-				)
-			) : creandoEncuesta ? (
-				<>
-					<CrearEncuesta onClose={() => setCreandoEncuesta(false)} />
-				</>
-			) : (
-				<>
-					<EncuestasCreadas
-						handleEncuestasCreada={(selectedEncuestaId) =>
-							handleSelectEncuesta(selectedEncuestaId)
-						}
-					/>
-					{stickyCrearEncuesta}
-				</>
-			)}
-			<BarandiBottomNavigation
-				tabs={['Jornadas', 'Encuestas']}
-				icons={[<Event />, <Poll />]}
-				value={tab}
-				onchange={setTab}
-			/>
-		</div>
-	);
-};
-
-export default JornadasFuturas;

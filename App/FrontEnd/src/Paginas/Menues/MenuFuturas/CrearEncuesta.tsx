@@ -16,15 +16,7 @@ import { Check, Delete, Save } from '@mui/icons-material';
 import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
 import { OkDialog } from 'Componentes/OkDialog/OkDialog';
 
-interface propsEcuesta {
-	id: number;
-	pregunta: {
-		nombre: string;
-		tipo: string;
-		esObligatoria: boolean;
-		opciones?: respuesta[];
-	};
-}
+
 
 interface respuesta {
 	id: number;
