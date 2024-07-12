@@ -14,10 +14,6 @@ import { useEffect, useState } from "react";
 import { supabaseClient } from "supabase";
 import { useParams } from "react-router-dom";
 
-interface props {
-  id: number;
-}
-
 interface Pregunta {
   id: number;
   tipo: "texto" | "seleccionSimple" | "seleccionMultiple";
@@ -39,7 +35,7 @@ interface Encuesta {
   titulo: string;
 }
 
-const RealizarFormato: React.FC<props> = (props) => {
+const RealizarFormato: React.FC = () => {
   const idEncuesta = useParams().idRol;
   const [cedulaB, setCedula] = useState("");
   const [nombreB, setNombre] = useState("");
@@ -48,7 +44,10 @@ const RealizarFormato: React.FC<props> = (props) => {
   const [openModal, setOpenModal] = useState(false);
   const [checked, setChecked] = useState(false);
   const [comunidadnew, setComunidadnew] = useState("");
-  const [comunidad, setComunidad] = useState();
+  const [comunidad, setComunidad] = useState({
+    id: 0,
+    label: "Comunidad",
+  });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
@@ -110,7 +109,7 @@ const RealizarFormato: React.FC<props> = (props) => {
         cedula: cedulaB,
         nombre: nombreB,
         edad: edadB,
-        comunidad: comunidad.id,
+        comunidad: comunidad?.id,
       },
     ]);
 
@@ -162,8 +161,11 @@ const RealizarFormato: React.FC<props> = (props) => {
                   getOptionLabel={(option) => option.label}
                   style={{ width: 300 }}
                   value={comunidad}
-                  onChange={(event, newValue: string | null) => {
-                    setComunidad(newValue);
+                  onChange={(_, newValue: string | null) => {
+                    setComunidad({
+                      id: comunidad.id,
+                      label: newValue,
+                    });
                   }}
                   renderInput={(params) => (
                     <TextField

@@ -13,6 +13,7 @@ export const JornadasCreadas: React.FC<propsJornadasCreadas> = (
 ) => {
 	const [informacion, setInformacion] = useState([<div>cargando. . . </div>]);
 
+	const [obtenidas, setObtenidas] = useState(false);
 	async function obtainJornadas() {
 		const jornadas = await supabaseClient
 			.from('jornadas')
@@ -27,10 +28,11 @@ export const JornadasCreadas: React.FC<propsJornadasCreadas> = (
 			/>
 		));
 
+		setObtenidas(true);
 		setInformacion(informacion);
 	}
 
-	obtainJornadas();
+	if (!obtenidas) obtainJornadas();
 	return (
 		<>
 			<div className={styles.caja}>

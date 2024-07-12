@@ -16,8 +16,6 @@ import { Check, Delete, Save } from '@mui/icons-material';
 import BotonSticky from 'Componentes/BotonSticky/BotonSticky';
 import { OkDialog } from 'Componentes/OkDialog/OkDialog';
 
-
-
 interface props {
 	onClose: () => void;
 }

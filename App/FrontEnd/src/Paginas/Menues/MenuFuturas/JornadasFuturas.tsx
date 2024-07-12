@@ -45,7 +45,6 @@ const JornadasFuturas: React.FC = () => {
 			positiony="bottom"
 		/>
 	);
-
 	return (
 		<div>
 			<Header titulo="Jornadas futuras" />

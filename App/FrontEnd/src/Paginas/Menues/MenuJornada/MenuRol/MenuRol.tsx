@@ -135,7 +135,7 @@ const MenuRol: React.FC = () => {
 
       {tab === "Encuestados" ? (
         hacerEncuesta === true ? (
-          <RealizarFormato id={0} />
+          <RealizarFormato />
         ) : (
           <EncuestasRealizadas />
         )
