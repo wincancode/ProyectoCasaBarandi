@@ -36,27 +36,7 @@ const JornadasFuturas: React.FC = () => {
 			positiony="bottom"
 		/>
 	);
-	const stickyGuardarJornada = (
-		<BotonSticky
-			Logo={<Save />}
-			positionx="right"
-			positiony="bottom"
-			onClick={() => {
-				setCreandoJornada(false), handleSelectJornada(null);
-			}}
-		/>
-	);
-	const stickyDesecharJornada = (
-		<BotonSticky
-			Logo={<Delete />}
-			onClick={() => {
-				setCreandoJornada(false), handleSelectEncuesta(null);
-			}}
-			positionx="left"
-			positiony="bottom"
-		/>
-	);
-
+	
 	const stickyCrearEncuesta = (
 		<BotonSticky
 			onClick={() => setCreandoEncuesta(true)}

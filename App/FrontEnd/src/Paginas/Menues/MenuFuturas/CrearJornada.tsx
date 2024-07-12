@@ -97,7 +97,7 @@ export const CrearJornada: React.FC<props> = (props) => {
 			.select();
 
 		const rolesAinsertar = roles.map((rol) => ({
-			rol: rol.rol,
+			nombre: rol.rol,
 			encuesta_id: rol.encuesta,
 			jornada_id: jornadaInsertada.data[0].id
 		}));
@@ -143,6 +143,7 @@ export const CrearJornada: React.FC<props> = (props) => {
 	const [encuestasData, setEncuestasData] = React.useState<JSX.Element[]>([
 		<MenuItem>cargando</MenuItem>
 	]);
+	const [encuestasCargadas, setEncuestasCargadas] = React.useState(false);
 
 	const handleDataEncuesta = async () => {
 		const dataEncuesta = await supabaseClient
@@ -154,9 +155,23 @@ export const CrearJornada: React.FC<props> = (props) => {
 		));
 
 		setEncuestasData(data);
+
+		setAgregaciones(
+			roles.map((rol) => (
+				<SeleccionRol
+					opcionesEncuesta={data}
+					id={rol.id}
+					rol={rol.rol}
+					encuesta={rol.encuesta}
+					onChange={handleRolChange}
+				/>
+			))
+		);
+
+		setEncuestasCargadas(true);
 	};
 
-	handleDataEncuesta();
+	if (!encuestasCargadas) handleDataEncuesta();
 
 	const handleRolChange = (id: number, rol: string, encuesta: number) => {
 		const newRoles = roles;
