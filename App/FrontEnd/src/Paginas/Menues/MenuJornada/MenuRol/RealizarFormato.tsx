@@ -1,18 +1,45 @@
-import { Stack, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  FormControl,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import PreguntaDeEncuesta from "Componentes/PreguntaDeEncuesta/PreguntaDeEncuesta";
 import styles from "./RealizarFormato.module.css";
 import BotonSticky from "Componentes/BotonSticky/BotonSticky";
+import { useState } from "react";
 
 interface props {
   id: number;
 }
 
 const RealizarFormato: React.FC<props> = (props) => {
+  const [cedula, setCedula] = useState("");
+
+  const funtion = () => {};
+
   return (
     <>
       <Typography variant="h3">
         <div className={styles.titulo}>Realizar formato {props.id} </div>
       </Typography>
+      <Typography variant="h5">
+        <div className={styles.subtitulo}>Informacion del Beneficiado</div>
+      </Typography>
+      <div>
+        <TextField
+          id="standard-basic"
+          label="Cedula"
+          variant="standard"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setCedula(event.target.value);
+          }}
+        />
+        <Button/>
+      </div>
+
       <div className={styles.preguntas}>
         <Stack spacing={2} minWidth={"23rem"}>
           <PreguntaDeEncuesta
