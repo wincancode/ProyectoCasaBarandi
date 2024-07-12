@@ -11,7 +11,6 @@ import {
 	useLocation
 } from 'react-router-dom';
 import MenuInicio from './Paginas/MenuPrincipal/MenuInicio';
-import CrearJornada from './Paginas/Menues/MenuFuturas/CrearJornada';
 import { amber, cyan, yellow } from '@mui/material/colors';
 import MenuRol from 'Paginas/Menues/MenuJornada/MenuRol/MenuRol';
 import ListaRoles from 'Paginas/Menues/MenuJornada/ListaRoles/ListaRoles';
@@ -114,7 +113,7 @@ const router = createBrowserRouter([
 		)
 	},
 	{
-		path: '/listaRoles',
+		path: '/listaRoles/:idJornada',
 		element: (
 			<BarandiTheme>
 				<ListaRoles />

@@ -1,10 +1,13 @@
 import { Header } from 'Componentes/Header/Header';
 import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
 import BotonLista from 'Componentes/BotonLista/BotonLista';
+import { useParams } from 'react-router-dom';
 
 const mockRoles = ['mastologia', 'ginecologia', 'pediatria', 'asistencia'];
 
 const ListaRoles: React.FC = () => {
+	const { idJornada } = useParams();
+
 	const roles = mockRoles.map((rol) => {
 		return (
 			<BotonLista
