@@ -13,4 +13,35 @@
     margin-bottom: 10rem;
 }
 
+.modal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    padding: 1rem;
+    border: 1px solid #000;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+}
 
+.respuestas{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin : 1rem;
+    flex-direction: column;
+    gap: 2rem
+
+   
+}
+
+.flex{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin : 1rem;
+    flex-direction: row;
+}

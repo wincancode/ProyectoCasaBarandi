@@ -19,20 +19,27 @@ interface Props {
     tipo: "texto" | "seleccionSimple" | "seleccionMultiple";
     opciones?: string[];
     esObligatoria: boolean;
-    respuestaEscrita?: respuesta;
-    respuestasSeleccionables?: respuesta[];
+    respuestaEscrita?: string;
+    respuestasSeleccionables?: string[];
   };
+  onChangeRespuestaEscrita: (id: number, respuesta: string) => void;
+  onChangeRespuestaSeleccionMultiple: (id: number, respuesta: string) => void;
+  onChangeRespuestaSeleccionSimple: (id: number, respuesta: string) => void;
 }
 
-interface respuesta {
-  id: number;
-}
-
-const PreguntaTexto = () => {
+const PreguntaTexto: React.FC<Props> = (props) => {
   return (
     <>
       <Typography variant="body1">Escribe tu respuesta</Typography>
-      <TextField variant="standard" fullWidth label={"Respuesta"} />
+      <TextField
+        onChange={(e) =>
+          props.onChangeRespuestaEscrita(props.id, e.target.value)
+        }
+        value={props.pregunta.respuestaEscrita}
+        variant="standard"
+        fullWidth
+        label={"Respuesta"}
+      />
     </>
   );
 };
@@ -43,7 +50,15 @@ const PreguntaSeleccion = (props: Props) => {
       <Typography variant="body1">Selecciona una respuesta</Typography>
 
       {props.pregunta.tipo === "seleccionSimple" ? (
-        <RadioGroup>
+        <RadioGroup
+          onChange={(e) =>
+            props.onChangeRespuestaSeleccionSimple(props.id, e.target.value)
+          }
+          value={
+            props.pregunta.respuestasSeleccionables
+              ? props.pregunta.respuestasSeleccionables[0]
+              : ""
+          }>
           {props.pregunta.opciones?.map((respuesta, index) => (
             <FormControlLabel
               key={index}
@@ -56,7 +71,16 @@ const PreguntaSeleccion = (props: Props) => {
       ) : (
         props.pregunta.opciones?.map((opcion, index) => (
           <div className={styles.seleccion}>
-            <Checkbox key={index} />
+            <Checkbox
+              onChange={(e) =>
+                props.onChangeRespuestaSeleccionMultiple(
+                  props.id,
+                  e.target.value
+                )
+              }
+              value={opcion}
+              key={index}
+            />
             <Typography key={index}>{opcion}</Typography>
           </div>
         ))
@@ -79,9 +103,17 @@ const PreguntaDeEncuesta: React.FC<Props> = (props) => {
             {props.pregunta.esObligatoria ? "*" : null}
           </Typography>
           {props.pregunta.tipo === "texto" ? (
-            <PreguntaTexto />
+            <PreguntaTexto
+              {...props}
+              onChangeRespuestaEscrita={props.onChangeRespuestaEscrita}
+            />
           ) : (
-            <PreguntaSeleccion {...props} />
+            <PreguntaSeleccion
+              {...props}
+              onChangeRespuestaSeleccionSimple={
+                props.onChangeRespuestaSeleccionSimple
+              }
+            />
           )}
         </CardContent>
       </Card>
