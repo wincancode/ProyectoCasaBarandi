@@ -8,14 +8,14 @@ interface propsEncuestasCreadas {
 	handleEncuestasCreada: (number) => void;
 }
 
-
-
 export const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
 	handleEncuestasCreada
 }) => {
 	const [encuestasComponente, setEncuestasComponente] = useState([
 		<>cargando</>
 	]);
+
+	const [obtenidas, setObtenidas] = useState(false);
 
 	async function obtainEncuestas() {
 		const encuestas = await supabaseClient
@@ -31,9 +31,13 @@ export const EncuestasCreadas: React.FC<propsEncuestasCreadas> = ({
 			/>
 		));
 
+		setObtenidas(true);
 		setEncuestasComponente(bar);
 	}
-	obtainEncuestas();
+
+	if (!obtenidas) {
+		obtainEncuestas();
+	}
 
 	return (
 		<>
