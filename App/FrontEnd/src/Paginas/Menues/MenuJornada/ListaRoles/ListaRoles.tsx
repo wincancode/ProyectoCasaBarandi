@@ -1,45 +1,58 @@
-import { Header } from 'Componentes/Header/Header';
-import { BarandiBottomNavigation } from 'Componentes/BottomNavigation/BarandiBottomNavigation';
-import BotonLista from 'Componentes/BotonLista/BotonLista';
-import { useParams } from 'react-router-dom';
-
-const mockRoles = ['mastologia', 'ginecologia', 'pediatria', 'asistencia'];
+import { Header } from "Componentes/Header/Header";
+import { BarandiBottomNavigation } from "Componentes/BottomNavigation/BarandiBottomNavigation";
+import BotonLista from "Componentes/BotonLista/BotonLista";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabaseClient } from "supabase";
 
 const ListaRoles: React.FC = () => {
-	const { idJornada } = useParams();
+  const { idJornada } = useParams();
+  //Usar la jornada 7 como ejemplo
+  console.log(idJornada);
 
-	const roles = mockRoles.map((rol) => {
-		return (
-			<BotonLista
-				onClick={() => (window.location.href = '/jornada-actual/1')}
-				titulo={rol}
-				subtitulo="encuesta-nombre"
-			/>
-		);
-	});
+  const [rolesCargados, setRoles] = useState([<div>Cargando . . .</div>]);
 
-	return (
-		<>
-			<Header titulo="roles" />
+  async function getRoles() {
+    const roles = await supabaseClient.from("Roles").select("id, nombre");
 
-			<div
-				style={{
-					marginTop: '1rem',
-					display: 'flex',
-					flexDirection: 'column',
-					gap: '8px'
-				}}
-			>
-				{roles}
-			</div>
+    const bar = roles.data.map((rol, index) => (
+      <BotonLista
+        key={index}
+        onClick={() => (window.location.href = "/jornada-actual/" + rol.id)}
+        titulo={rol.nombre}
+        
+      />
 
-			<BarandiBottomNavigation
-				tabs={['roles']}
-				value="roles"
-				onchange={() => null}
-			/>
-		</>
-	);
+    ));
+
+    setRoles(bar);
+  }
+
+  useEffect(() => {
+    getRoles();
+  }, []);
+
+  return (
+    <>
+      <Header titulo="roles" />
+
+      <div
+        style={{
+          marginTop: "1rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+        }}>
+        {rolesCargados}
+      </div>
+
+      <BarandiBottomNavigation
+        tabs={["roles"]}
+        value="roles"
+        onchange={() => null}
+      />
+    </>
+  );
 };
 
 export default ListaRoles;
