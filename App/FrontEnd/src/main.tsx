@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { createTheme } from '@mui/material/styles';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline, Theme } from '@mui/material';
+import ResponderEncuesta from './Paginas/JornadasEncuestas Creadas/ResponderEncuesta'
 
 import Estadisticas from './Paginas/Estadisticas/Estadisticas';
 import {
@@ -68,6 +69,9 @@ const BarandiTheme = ({ children }) => {
 		case '/listaRoles':
 			theme = greenTheme;
 			break;
+		case '/ResponderEncuesta':
+			theme = yellowTheme;
+			break;
 		default:
 			theme = greenTheme;
 	}
@@ -125,6 +129,14 @@ const router = createBrowserRouter([
 		element: (
 			<BarandiTheme>
 				<MenuRol />
+			</BarandiTheme>
+		)
+	},
+	{
+		path: '/ResponderEncuesta',
+		element: (
+			<BarandiTheme>
+				<ResponderEncuesta />
 			</BarandiTheme>
 		)
 	}
